@@ -1,0 +1,38 @@
+######################################################################
+#                         Test::Perl::Critic                         #
+#                            Version 0.02                            #
+#                       by Jeffrey R. Thalhammer                     #
+#                          <thaljef@cpan.org>                        #
+######################################################################
+
+ABOUT
+	Test::Critic is a companion to the Perl::Critic module.  If
+	you already use Perl::Critic to help enforce coding standards,
+	Test::Critic allows you to integrate enforcement directly into
+	your build proceess.
+
+	Much the same way that Test::Pod and Test::Pod::Coverage
+	create test cases to verify the quality of your documentation,
+	Test::Perl::Critic creates test cases to verify the "kwalitee"
+	of your code.
+
+	See the POD documentation for all the gory details.
+
+PREREQUISITES
+
+	Test::Perl::Critic requires the following modules:
+
+	* Test:::More
+	* Perl::Critic
+	
+	For complete build tests, I also suggest the following:
+
+	* Test::Pod
+	* Test::Pod::Coverage
+
+INSTALLATION
+
+	See the INSTALL file for installation instructions.
+
+
+	
