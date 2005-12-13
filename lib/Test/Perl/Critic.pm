@@ -17,9 +17,10 @@ use File::Spec;
 our $VERSION = '0.03';
 $VERSION = eval $VERSION;    ## no critic
 
-my $TEST    = Test::Builder->new();
-my $PROFILE = undef;
-my $FORMAT  = undef;
+my $TEST     = Test::Builder->new();
+my $PROFILE  = undef;
+my $FORMAT   = undef;
+my $SEVERITY = undef;
 
 #---------------------------------------------------------------------------
 
@@ -27,13 +28,14 @@ sub import {
     my ( $self, %args ) = @_;
     my $caller = caller;
 
-    no strict 'refs';
+    no strict 'refs';  ## no critic
     *{ $caller . '::critic_ok' }     = \&critic_ok;
     *{ $caller . '::all_critic_ok' } = \&all_critic_ok;
 
     $TEST->exported_to($caller);
-    $FORMAT  = $args{-format}  || "\t%m at line %l, column %c. %e";
-    $PROFILE = $args{-profile} || q{};
+    $FORMAT   = $args{-format}   || "\t%m at line %l, column %c. %e";
+    $PROFILE  = $args{-profile}  || q{};
+    $SEVERITY = $args{-severity} || 1;
 }
 
 #---------------------------------------------------------------------------
@@ -41,27 +43,28 @@ sub import {
 sub critic_ok {
 
     my ( $file, $name ) = @_;
-    $name ||= "Test::Perl::Critic for $file";
+    $name ||= qq{Test::Perl::Critic for '$file'};
     my @violations = ();
     my $ok = 0;
 
     if ( !-f $file ) {
         $TEST->ok( 0, $name );
-        $TEST->diag("$file does not exist");
+        $TEST->diag( qq{'$file' does not exist} );
         return;
     }
 
     eval {
-	my $critic  = Perl::Critic->new( -profile => $PROFILE );
+        my %config  = ( -severity => $SEVERITY, -profile => $PROFILE );
+	my $critic  = Perl::Critic->new( %config );
 	@violations = $critic->critique($file);
 	$ok         = !scalar @violations;
     };
-    
+
     # Evaluate results
     $TEST->ok( $ok, $name );
 
 
-    if ($EVAL_ERROR) {  # Trap exceptions from P::C
+    if ($EVAL_ERROR) {     # Trap exceptions from P::C
 	$TEST->diag( "\n" );     #Just to get on a new line.
         $TEST->diag( qq{Perl::Critic had errors in '$file':} );
 	$TEST->diag( qq{\t$EVAL_ERROR} );
@@ -70,8 +73,10 @@ sub critic_ok {
         $TEST->diag( "\n" );         #Just to get on a new line.
         $TEST->diag( qq{Perl::Critic found these violations in '$file':} );
 	$FORMAT =~ s{\%f}{$file}gmx; #HACK! Violation doesn't know the file
-	no warnings 'once';         #Ugh. It's tough to be a perfectionist.
-	local $Perl::Critic::Violation::FORMAT = $FORMAT;  ## no critic
+
+        ## no critic
+	no warnings 'once';
+	local $Perl::Critic::Violation::FORMAT = $FORMAT;
         for my $viol (@violations) { $TEST->diag("$viol") }
     }
 
@@ -107,9 +112,8 @@ sub all_code_files {
             closedir $dh;
 
             @newfiles = File::Spec->no_upwards(@newfiles);
-            @newfiles = grep { $_ ne 'CVS' && $_ ne '.svn' } @newfiles;
-
-            push @queue, map { "$file/$_" } @newfiles;
+            @newfiles = grep { $_ ne 'CVS' && $_ ne '.svn' }    @newfiles;
+            push @queue, map { File::Spec->catfile($file, $_) } @newfiles;
         }
 
         if ( -f $file && _is_perl($file) ) {
