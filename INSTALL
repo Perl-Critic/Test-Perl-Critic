@@ -1,17 +1,17 @@
 ######################################################################
-#                            Test::Critic                            #
-#                            Version 0.01                            #
+#                          Test::Perl::Critic                        #
+#                            Version 0.03_01                         #
 #                       by Jeffrey R. Thalhammer                     #
 #                          <thaljef@cpan.org>                        #
 ######################################################################
 
 INSTALLATION
 
-To install Test::Critic with C<make> give the following commands to
-your favorite shell:
+To install Test::Perl::Critic with C<make> give the following commands
+to your favorite shell:
 
-  tar -zxf Test-Critic-0.01.tar.gz
-  cd Test-Critic-0.01
+  tar -zxf Test-Perl-Critic-0.03_01.tar.gz
+  cd Test-Perl-Critic-0.03_01
   perl Makefile.PL
   make
   make test
@@ -19,8 +19,8 @@ your favorite shell:
 
 Or if you prefer C<Module::Build>, try this:
 
-  tar -zxf Test-Critic-0.01.tar.gz
-  cd Test-Critic-0.01
+  tar -zxf Test-Perl-Critic-0.03_01.tar.gz
+  cd Test-Perl-Critic-0.03_01
   perl Build.pl
   ./Build
   ./Build test

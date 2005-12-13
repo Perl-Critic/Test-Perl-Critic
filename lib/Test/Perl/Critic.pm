@@ -14,7 +14,7 @@ use Test::Builder;
 use Perl::Critic;
 use File::Spec;
 
-our $VERSION = '0.03';
+our $VERSION = '0.03_01';
 $VERSION = eval $VERSION;    ## no critic
 
 my $TEST     = Test::Builder->new();
