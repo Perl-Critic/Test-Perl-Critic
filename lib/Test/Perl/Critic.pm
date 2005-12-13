@@ -25,6 +25,7 @@ my $SEVERITY = undef;
 #---------------------------------------------------------------------------
 
 sub import {
+
     my ( $self, %args ) = @_;
     my $caller = caller;
 
@@ -36,6 +37,8 @@ sub import {
     $FORMAT   = $args{-format}   || "\t%m at line %l, column %c. %e";
     $PROFILE  = $args{-profile}  || q{};
     $SEVERITY = $args{-severity} || 1;
+
+    return 1;
 }
 
 #---------------------------------------------------------------------------
@@ -139,7 +142,7 @@ sub _is_perl {
     return 1 if $file =~ m{ [.] t           \z}mx;
 
     #Check for shebang
-    open my ($fh), $file or return;
+    open my ($fh), '<', $file or return;
     my $first = <$fh>;
     close $fh;
 
