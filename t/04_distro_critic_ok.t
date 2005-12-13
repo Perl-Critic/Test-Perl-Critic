@@ -5,11 +5,9 @@
 # $Revision$
 ########################################################################
 
-use blib;
 use strict;
 use warnings;
-use Test::More;
-use Test::Perl::Critic;
+use Test::Perl::Critic (-severity => 3);
 
 #---------------------------------------------------------------------------
 
