@@ -224,7 +224,7 @@ A Perl file is:
 
 =head1 CONFIGURATION
 
-L<Perl::Crtic> is highly configurable.  By default, Test::Perl::Critic
+L<Perl::Critic> is highly configurable.  By default, Test::Perl::Critic
 invokes Perl::Critic with its default configuration.  But if you have
 developed your code against a custom Perl::Critic configuration,
 you will want to configure Test::Perl::Critic to do the same.
@@ -257,14 +257,34 @@ explanation of the formatting capabilities.  Valid escape characters
 are:
 
   Escape    Meaning
-  -------   -----------------------------------------------------
+  -------   ------------------------------------------------------------------
   %m        Brief description of the violation
   %f        Name of the file where the violation occurred.
   %l        Line number where the violation occurred
   %c        Column number where the violation occurred
   %e        Explanation of violation or page numbers in PBP
   %d        Full diagnostic discussion of the violation
+  %r        The string of source code that caused the violation
   %p        Name of the Policy module that created the violation
+  %s        The severity level of the violation
+
+=head1 CAVEATS
+
+Despite the obvious convenience of using test scripts to verify that
+your code complies with coding standards, its not really sesible to
+distribute your module with those scripts.  You don't know which
+version of Perl::Critic the user has and whether they have installed
+additional Policy modules, you can't really be sure that your code
+will pass the Test::Perl::Critic tests on another machine.
+
+The easy solution is to add your F<criticize.t> test script to the
+F<MANIFEST.SKIP>.  When you test your build, you'll still be able to
+run the Perl::Critic tests when you C<'make test'>, but they won't be
+included in the tarball when you C<'make dist'>.
+
+See L<http://www.chrisdolan.net/talk/index.php/2005/11/14/private-regression-tests/>
+for an interesting discussion about Test::Perl::Critic and other types
+of author-only regression tests.
 
 =head1 EXPORTS
 
