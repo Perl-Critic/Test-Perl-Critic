@@ -14,7 +14,7 @@ use Test::Builder;
 use Perl::Critic;
 use File::Spec;
 
-our $VERSION = '0.03_01';
+our $VERSION = '0.04';
 $VERSION = eval $VERSION;    ## no critic
 
 my $TEST     = Test::Builder->new();
@@ -173,7 +173,8 @@ Test::Perl::Critic - Use Perl::Critic in test scripts
 Test::Perl::Critic wraps the L<Perl::Critic> engine in a convenient
 subroutine suitable for test scripts written for L<Test::Harness>.
 This makes it easy to integrate coding-standards enforcement into the
-build process.
+build process.  For ultimate convenience (at the expense of some
+flexibility), see the L<criticism> pragma.
 
 =head1 SUBROUTINES
 
