@@ -1,38 +1,138 @@
-######################################################################
-#                         Test::Perl::Critic                         #
-#                           Version 0.03_01                          #
-#                       by Jeffrey R. Thalhammer                     #
-#                          <thaljef@cpan.org>                        #
-######################################################################
+NAME
+    Test::Perl::Critic - Use Perl::Critic in test scripts
 
-ABOUT
-	Test::Critic is a companion to the Perl::Critic module.  If
-	you already use Perl::Critic to help enforce coding standards,
-	Test::Critic allows you to integrate enforcement directly into
-	your build proceess.
+SYNOPSIS
+      use Test::Perl::Critic;
 
-	Much the same way that Test::Pod and Test::Pod::Coverage
-	create test cases to verify the quality of your documentation,
-	Test::Perl::Critic creates test cases to verify the "kwalitee"
-	of your code.
+      critic_ok($file);                          #Test one file
+      all_critic_ok($dir_1, $dir_2, $dir_N );    #Test all files in several $dirs
+      all_critic_ok()                            #Test all files in distro
 
-	See the POD documentation for all the gory details.
+DESCRIPTION
+    Test::Perl::Critic wraps the Perl::Critic engine in a convenient
+    subroutine suitable for test scripts written for Test::Harness. This
+    makes it easy to integrate coding-standards enforcement into the build
+    process. For ultimate convenience (at the expense of some flexibility),
+    see the criticism pragma.
 
-PREREQUISITES
+SUBROUTINES
+    critic_ok( FILE [, TESTNAME ] )
+            Okays the test if Perl::Critic does not find any violations in
+            FILE. If it does, the violations will be reported in the test
+            diagnostics. The optional second argument is the name of test,
+            which defaults to "Perl::Critic test for FILE".
 
-	Test::Perl::Critic requires the following modules:
+    all_critic_ok( @DIRECTORIES )
+            Runs "critic_ok()" for all Perl files beneath the given list of
+            directories. If given an empty list, the function tries to find
+            all Perl files in the blib/ directory. If the blib/ directory
+            does not exist, then it tries the lib/ directory.
 
-	* Test:::More
-	* Perl::Critic
-	
-	For complete build tests, I also suggest the following:
+            If you are testing a module, just make a t/criticize.t file with
+            this:
 
-	* Test::Pod
-	* Test::Pod::Coverage
+              use Test::More;
+              eval 'use Test::Perl::Critic';
+              plan skip_all => 'Test::Perl::Critic required to criticise code' if $@;
+              all_critic_ok();
 
-INSTALLATION
+            Returns true if all files are ok, or false if any file fails.
 
-	See the INSTALL file for installation instructions.
+    all_code_files ( [@DIRECTORIES] )
+            Returns a list of all the Perl files found beneath each
+            DIRECTORY, If @DIRECTORIES is an empty list, defaults to blib/.
+            If blib/ does not exist, it tries lib/. Skips any files in CVS
+            or .svn directories.
 
+            A Perl file is:
 
-	
+            * Any file that ends in .PL, .pl, .pm, or .t
+            * Any file that has a first line with a shebang containing
+            'perl'
+
+CONFIGURATION
+    Perl::Critic is highly configurable. By default, Test::Perl::Critic
+    invokes Perl::Critic with its default configuration. But if you have
+    developed your code against a custom Perl::Critic configuration, you
+    will want to configure Test::Perl::Critic to do the same.
+
+    Test::Perl::Critic allows you to configure Perl::Critic by passing the
+    path to a perlcriticrc file in the "use" pragma. For example:
+
+      use Test::Perl::Critic (-profile => 't/perlcriticrc');
+      all_critic_ok();
+
+    Now place a copy of your own .perlcritic file in the distribution as
+    t/perlcriticrc. Then, "critc_ok()" will be run on all Perl files in this
+    distribution using this same Perl::Critic configuration. See the
+    Perl::Critic documentation for details on the .perlcriticrc file format.
+
+DIAGNOSTIC DETAILS
+    By default, Test::Perl::Critic displays basic information about each
+    Policy violation in the diagnostic output of the test. You can customize
+    the format and content of this information by giving the "-format"
+    option to the "use" pragma. For example:
+
+      use Test::Perl::Critic (-format => "%m at line %l, column %c.");
+      all_critic_ok();
+
+    Formats are a combination of literal and escape characters similar to
+    the way "sprintf" works. See String::Format for a full explanation of
+    the formatting capabilities. Valid escape characters are:
+
+      Escape    Meaning
+      -------   ------------------------------------------------------------------
+      %m        Brief description of the violation
+      %f        Name of the file where the violation occurred.
+      %l        Line number where the violation occurred
+      %c        Column number where the violation occurred
+      %e        Explanation of violation or page numbers in PBP
+      %d        Full diagnostic discussion of the violation
+      %r        The string of source code that caused the violation
+      %p        Name of the Policy module that created the violation
+      %s        The severity level of the violation
+
+CAVEATS
+    Despite the obvious convenience of using test scripts to verify that
+    your code complies with coding standards, its not really sesible to
+    distribute your module with those scripts. You don't know which version
+    of Perl::Critic the user has and whether they have installed additional
+    Policy modules, you can't really be sure that your code will pass the
+    Test::Perl::Critic tests on another machine.
+
+    The easy solution is to add your criticize.t test script to the
+    MANIFEST.SKIP. When you test your build, you'll still be able to run the
+    Perl::Critic tests when you 'make test', but they won't be included in
+    the tarball when you 'make dist'.
+
+    See
+    <http://www.chrisdolan.net/talk/index.php/2005/11/14/private-regression-
+    tests/> for an interesting discussion about Test::Perl::Critic and other
+    types of author-only regression tests.
+
+EXPORTS
+      critic_ok()
+      all_critic_ok()
+
+BUGS
+    Please report all bugs to <http://rt.cpan.org>. Thanks.
+
+SEE ALSO
+    Perl::Critic
+
+    Test::More
+
+CREDITS
+    Andy Lester, whose Test::Pod module provided most of the code and
+    documentation for Test::Critic. Thanks, Andy.
+
+AUTHOR
+    Jeffrey Ryan Thalhammer <thaljef@cpan.org>
+
+COPYRIGHT
+    Copyright (c) 2005 Jeffrey Ryan Thalhammer. All rights reserved.
+
+    This program is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself. The full text of this license can
+    be found in the LICENSE file included with this module.
+
