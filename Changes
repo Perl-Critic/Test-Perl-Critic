@@ -5,6 +5,13 @@
 # $Revision$
 ########################################################################
 
+[0.04] Released on 060115
+
+     Updated to be compatible with Perl-Critic 0.14, but is not
+     backward compatible with older versions of Perl-Critic.  If
+     you want to use the -severity option with Perl-Critic, you
+     need to use Perl-Critic version 0.14 or later.
+
 [0.03] Released on 051031
 
      Now catching exceptions from Perl::Critic so the tests fail
