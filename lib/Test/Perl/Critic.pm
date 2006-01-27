@@ -187,7 +187,7 @@ If it does, the violations will be reported in the test diagnostics.
 The optional second argument is the name of test, which defaults to
 "Perl::Critic test for FILE".
 
-=item all_critic_ok( @DIRECTORIES )
+=item all_critic_ok( [@DIRECTORIES] )
 
 Runs C<critic_ok()> for all Perl files beneath the given list of
 directories.  If given an empty list, the function tries to find all
