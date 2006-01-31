@@ -1,13 +1,16 @@
-# http://module-build.sourceforge.net/META-spec.html
-#XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
-name:         Test-Perl-Critic
-version:      0.04
-version_from: lib/Test/Perl/Critic.pm
-installdirs:  site
+---
+name: Test-Perl-Critic
+version: 0.05
+author:
+  - Jeffrey Thalhammer <thaljef@cpan.org>
+abstract: Use Perl::Critic in test scripts
+license: perl
 requires:
-    File::Spec:                    0
-    Perl::Critic:                  0.09
-    Test::More:                    0
-
-distribution_type: module
-generated_by: ExtUtils::MakeMaker version 6.17
+  File::Spec: 0
+  Perl::Critic: 0.1301
+  Test::More: 0
+provides:
+  Test::Perl::Critic:
+    file: lib/Test/Perl/Critic.pm
+    version: 0.05
+generated_by: Module::Build version 0.2611
