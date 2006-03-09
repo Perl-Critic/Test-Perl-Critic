@@ -17,10 +17,9 @@ use File::Spec;
 our $VERSION = '0.05';
 $VERSION = eval $VERSION;    ## no critic
 
-my $TEST     = Test::Builder->new();
-my $PROFILE  = undef;
-my $FORMAT   = undef;
-my $SEVERITY = undef;
+my $TEST        = Test::Builder->new();
+my $FORMAT      = undef;
+my %CRITIC_ARGS = ();
 
 #---------------------------------------------------------------------------
 
@@ -34,9 +33,8 @@ sub import {
     *{ $caller . '::all_critic_ok' } = \&all_critic_ok;
 
     $TEST->exported_to($caller);
-    $FORMAT   = $args{-format}   || "\t%m at line %l, column %c. %e";
-    $PROFILE  = $args{-profile}  || q{};
-    $SEVERITY = $args{-severity} || 1;
+    $FORMAT = delete $args{'-format'} || "\t%m at line %l, column %c. %e";
+    %CRITIC_ARGS = %args;
 
     return 1;
 }
@@ -57,8 +55,7 @@ sub critic_ok {
     }
 
     eval {
-        my %config  = ( -severity => $SEVERITY, -profile => $PROFILE );
-	my $critic  = Perl::Critic->new( %config );
+	my $critic  = Perl::Critic->new( %CRITIC_ARGS );
 	@violations = $critic->critique($file);
 	$ok         = !scalar @violations;
     };
@@ -67,12 +64,12 @@ sub critic_ok {
     $TEST->ok( $ok, $name );
 
 
-    if ($EVAL_ERROR) {     # Trap exceptions from P::C
+    if ($EVAL_ERROR) {           # Trap exceptions from P::C
 	$TEST->diag( "\n" );     #Just to get on a new line.
         $TEST->diag( qq{Perl::Critic had errors in '$file':} );
 	$TEST->diag( qq{\t$EVAL_ERROR} );
     }
-    elsif ( !$ok ) {    # Report Policy violations
+    elsif ( !$ok ) {                 # Report Policy violations
         $TEST->diag( "\n" );         #Just to get on a new line.
         $TEST->diag( qq{Perl::Critic found these violations in '$file':} );
 	$FORMAT =~ s{\%f}{$file}gmx; #HACK! Violation doesn't know the file
@@ -111,7 +108,7 @@ sub all_code_files {
         my $file = shift @queue;
         if ( -d $file ) {
             opendir my ($dh), $file or next;
-            my @newfiles = readdir $dh;
+            my @newfiles = sort readdir $dh;
             closedir $dh;
 
             @newfiles = File::Spec->no_upwards(@newfiles);
@@ -230,8 +227,10 @@ invokes Perl::Critic with its default configuration.  But if you have
 developed your code against a custom Perl::Critic configuration,
 you will want to configure Test::Perl::Critic to do the same.
 
-Test::Perl::Critic allows you to configure Perl::Critic by passing the
-path to a F<perlcriticrc> file in the C<use> pragma.  For example:
+Any arguments given to the C<use> pragma will be passed into the
+L<Perl::Critic> constructor.  For example, if you have developed your
+code using a custom f<.perlcritirc> file, you can ask
+Test::Perl::Critic to use a custom file too:
 
   use Test::Perl::Critic (-profile => 't/perlcriticrc');
   all_critic_ok();
@@ -246,8 +245,8 @@ F<.perlcriticrc> file format.
 
 By default, Test::Perl::Critic displays basic information about each
 Policy violation in the diagnostic output of the test.  You can
-customize the format and content of this information by giving the
-C<-format> option to the C<use> pragma.  For example:
+customize the format and content of this information by giving an
+additional C<-format> option to the C<use> pragma.  For example:
 
   use Test::Perl::Critic (-format => "%m at line %l, column %c.");
   all_critic_ok();

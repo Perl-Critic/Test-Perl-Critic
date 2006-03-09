@@ -5,6 +5,12 @@
 # $Revision$
 ########################################################################
 
+[0.05] Released on ??????
+
+     Modified interface to pass all arguments to Perl::Critic.
+     This give you a direct hook to configure Perl::Critic and
+     should still be backward compatible.
+
 [0.04] Released on 060115
 
      Updated to be compatible with Perl-Critic 0.14, but is not
