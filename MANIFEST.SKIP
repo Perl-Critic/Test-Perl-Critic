@@ -1,3 +1,5 @@
+README.developer
+
 # Version Control files
 ^\.cvsignore$
 CVS
@@ -30,6 +32,7 @@ RCS
 \.old$
 ^t/00_local_.*t$
 ^t/perlcriticrc$
+^tools
 
 # Temp/backup files
 ~$

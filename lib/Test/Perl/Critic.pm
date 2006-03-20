@@ -153,6 +153,8 @@ sub _is_perl {
 
 __END__
 
+=pod
+
 =head1 NAME
 
 Test::Perl::Critic - Use Perl::Critic in test scripts
@@ -177,7 +179,7 @@ flexibility), see the L<criticism> pragma.
 
 =over 8
 
-=item critic_ok( FILE [, TESTNAME ] )
+=item critic_ok( FILE [, TEST_NAME ] )
 
 Okays the test if Perl::Critic does not find any violations in FILE.
 If it does, the violations will be reported in the test diagnostics.
@@ -199,13 +201,13 @@ this:
   plan skip_all => 'Test::Perl::Critic required to criticise code' if $@;
   all_critic_ok();
 
-Returns true if all files are ok, or false if any file fails.
+Returns true if all files are okay, or false if any file fails.
 
 =item all_code_files ( [@DIRECTORIES] )
 
 Returns a list of all the Perl files found beneath each DIRECTORY, If
 @DIRECTORIES is an empty list, defaults to F<blib/>.  If F<blib/> does
-not exist, it tries F<lib/>.  Skips any files in CVS or .svn
+not exist, it tries F<lib/>.  Skips any files in CVS or Subversion
 directories.
 
 A Perl file is:
@@ -271,7 +273,7 @@ are:
 =head1 CAVEATS
 
 Despite the obvious convenience of using test scripts to verify that
-your code complies with coding standards, its not really sesible to
+your code complies with coding standards, its not really sensible to
 distribute your module with those scripts.  You don't know which
 version of Perl::Critic the user has and whether they have installed
 additional Policy modules, you can't really be sure that your code

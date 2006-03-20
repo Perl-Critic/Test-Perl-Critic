@@ -24,11 +24,11 @@ ok( ! Test::Perl::Critic::_is_perl( 'foo.gz'  ) );
 
 my @files = ();
 @files = Test::Perl::Critic::all_code_files('t');
-ok(scalar @files == 7);
+ok(scalar @files == 8);
 
 @files = Test::Perl::Critic::all_code_files('lib');
 ok(scalar @files == 1);
 
 @files = Test::Perl::Critic::all_code_files('lib', 't');
-ok(scalar @files == 8);
+ok(scalar @files == 9);
 

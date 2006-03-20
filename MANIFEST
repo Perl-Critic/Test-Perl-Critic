@@ -12,5 +12,6 @@ t/01_api.t
 t/02_critic_ok.t
 t/03_all_critic_ok.t
 t/04_distro_critic_ok.t
-t/98_pod-syntax.t
-t/99_pod-coverage.t
+t/97_spelling.t
+t/98_pod_syntax.t
+t/99_pod_coverage.t
