@@ -7,11 +7,16 @@
 
 use strict;
 use warnings;
-use Test::More tests => 11;
+use Test::More tests => 13;
 use Test::Perl::Critic;
 
 #---------------------------------------------------------------------------
 
+# Export tests
+can_ok('main', 'critic_ok');
+can_ok('main', 'all_critic_ok');
+
+# Private sub tests
 ok( Test::Perl::Critic::_is_perl( 'foo.pl' ) );
 ok( Test::Perl::Critic::_is_perl( 'foo.pm' ) );
 ok( Test::Perl::Critic::_is_perl( 'foo.PL' ) );
