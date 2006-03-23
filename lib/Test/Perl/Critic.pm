@@ -191,17 +191,19 @@ The optional second argument is the name of test, which defaults to
 Runs C<critic_ok()> for all Perl files beneath the given list of
 directories.  If given an empty list, the function tries to find all
 Perl files in the F<blib/> directory.  If the F<blib/> directory does
-not exist, then it tries the F<lib/> directory.
+not exist, then it tries the F<lib/> directory.  Returns true if all
+files are okay, or false if any file fails.
 
-If you are testing a module, just make a F<t/criticize.t> file with
-this:
+If you are building a module with the usual CPAN directory structure,
+just make a F<t/perlcritic.t> file like this:
 
   use Test::More;
   eval 'use Test::Perl::Critic';
   plan skip_all => 'Test::Perl::Critic required to criticise code' if $@;
   all_critic_ok();
 
-Returns true if all files are okay, or false if any file fails.
+Or if you use a the latest version of L<Module::Starter::PBP>, it will
+generate this and several other standard test scripts for you.
 
 =item all_code_files ( [@DIRECTORIES] )
 
@@ -314,7 +316,7 @@ Jeffrey Ryan Thalhammer <thaljef@cpan.org>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2005 Jeffrey Ryan Thalhammer.  All rights reserved.
+Copyright (c) 2005-2006 Jeffrey Ryan Thalhammer.  All rights reserved.
 
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.  The full text of this license
