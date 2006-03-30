@@ -272,6 +272,10 @@ are:
   %p        Name of the Policy module that created the violation
   %s        The severity level of the violation
 
+The default format is:
+
+  "\t%m at line %l, column %c. %e"
+
 =head1 CAVEATS
 
 Despite the obvious convenience of using test scripts to verify that
