@@ -10,11 +10,13 @@ package Test::Perl::Critic;
 use strict;
 use warnings;
 use English qw(-no_match_vars);
+use File::Spec;
 use Test::Builder;
 use Perl::Critic;
-use File::Spec;
+use Perl::Critic::Utils;
 
-our $VERSION = '0.05';
+
+our $VERSION = '0.06';
 $VERSION = eval $VERSION;    ## no critic
 
 my $TEST        = Test::Builder->new();
@@ -65,12 +67,12 @@ sub critic_ok {
 
 
     if ($EVAL_ERROR) {           # Trap exceptions from P::C
-	$TEST->diag( "\n" );     #Just to get on a new line.
+	$TEST->diag( "\n" );     # Just to get on a new line.
         $TEST->diag( qq{Perl::Critic had errors in '$file':} );
 	$TEST->diag( qq{\t$EVAL_ERROR} );
     }
     elsif ( !$ok ) {                 # Report Policy violations
-        $TEST->diag( "\n" );         #Just to get on a new line.
+        $TEST->diag( "\n" );         # Just to get on a new line.
         $TEST->diag( qq{Perl::Critic found these violations in '$file':} );
 	$FORMAT =~ s{\%f}{$file}gmx; #HACK! Violation doesn't know the file
 
@@ -87,7 +89,8 @@ sub critic_ok {
 
 sub all_critic_ok {
 
-    my @files = all_code_files(@_);
+    my @dirs = @_ ? @_ : _starting_points();
+    my @files = all_code_files( @dirs );
     $TEST->plan( tests => scalar @files );
 
     my $ok = 1;
@@ -98,29 +101,10 @@ sub all_critic_ok {
 }
 
 #---------------------------------------------------------------------------
+# TODO: Consider if we can remove ths subroutine entirely.
 
 sub all_code_files {
-
-    my @queue      = @_ ? @_ : _starting_points();
-    my @code_files = ();
-
-    while (@queue) {
-        my $file = shift @queue;
-        if ( -d $file ) {
-            opendir my ($dh), $file or next;
-            my @newfiles = sort readdir $dh;
-            closedir $dh;
-
-            @newfiles = File::Spec->no_upwards(@newfiles);
-            @newfiles = grep { $_ ne 'CVS' && $_ ne '.svn' }    @newfiles;
-            push @queue, map { File::Spec->catfile($file, $_) } @newfiles;
-        }
-
-        if ( -f $file && _is_perl($file) ) {
-            push @code_files, $file;
-        }
-    }
-    return @code_files;
+    return Perl::Critic::Utils::all_perl_files(@_);
 }
 
 #---------------------------------------------------------------------------
@@ -130,26 +114,9 @@ sub _starting_points {
 }
 
 #---------------------------------------------------------------------------
-sub _is_perl {
-    my $file = shift;
-
-    #Check filename extensions
-    return 1 if $file =~ m{ [.] PL          \z}mx;
-    return 1 if $file =~ m{ [.] p (?: l|m ) \z}mx;
-    return 1 if $file =~ m{ [.] t           \z}mx;
-
-    #Check for shebang
-    open my ($fh), '<', $file or return;
-    my $first = <$fh>;
-    close $fh;
-
-    return 1 if defined $first && ( $first =~ m{ \A \#!.*perl }mx );
-    return;
-}
 
 1;
 
-#---------------------------------------------------------------------------
 
 __END__
 
@@ -206,6 +173,9 @@ Or if you use a the latest version of L<Module::Starter::PBP>, it will
 generate this and several other standard test scripts for you.
 
 =item all_code_files ( [@DIRECTORIES] )
+
+B<DEPRECATED:> Use the C<all_perl_files> subroutine that is exported
+by L<Perl::Critic::Utils> instead.
 
 Returns a list of all the Perl files found beneath each DIRECTORY, If
 @DIRECTORIES is an empty list, defaults to F<blib/>.  If F<blib/> does
