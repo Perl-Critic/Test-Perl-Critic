@@ -101,10 +101,10 @@ sub all_critic_ok {
 }
 
 #---------------------------------------------------------------------------
-# TODO: Consider if we can remove ths subroutine entirely.
 
 sub all_code_files {
-    return Perl::Critic::Utils::all_perl_files(@_);
+    my @dirs = @_ ? @_ : _starting_points();
+    return Perl::Critic::Utils::all_perl_files(@dirs);
 }
 
 #---------------------------------------------------------------------------
