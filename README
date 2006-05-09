@@ -42,6 +42,9 @@ SUBROUTINES
             you.
 
     all_code_files ( [@DIRECTORIES] )
+            DEPRECATED: Use the "all_perl_files" subroutine that is exported
+            by Perl::Critic::Utils instead.
+
             Returns a list of all the Perl files found beneath each
             DIRECTORY, If @DIRECTORIES is an empty list, defaults to blib/.
             If blib/ does not exist, it tries lib/. Skips any files in CVS
@@ -96,6 +99,10 @@ DIAGNOSTIC DETAILS
       %r        The string of source code that caused the violation
       %p        Name of the Policy module that created the violation
       %s        The severity level of the violation
+
+    The default format is:
+
+      "\t%m at line %l, column %c. %e"
 
 CAVEATS
     Despite the obvious convenience of using test scripts to verify that

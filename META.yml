@@ -1,16 +1,16 @@
 ---
 name: Test-Perl-Critic
-version: 0.05
+version: 0.06
 author:
   - Jeffrey Thalhammer <thaljef@cpan.org>
 abstract: Use Perl::Critic in test scripts
 license: perl
 requires:
   File::Spec: 0
-  Perl::Critic: 0.1301
+  Perl::Critic: 0.1503
   Test::More: 0
 provides:
   Test::Perl::Critic:
     file: lib/Test/Perl/Critic.pm
-    version: 0.05
+    version: 0.06
 generated_by: Module::Build version 0.2611

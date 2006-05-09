@@ -16,7 +16,7 @@ my $builder = Module::Build->new(
   dist_abstract  => 'Use Perl::Critic in test scripts',
   license        => 'perl',
 
-  requires       => {'Perl::Critic'          => 0.13_01,
+  requires       => {'Perl::Critic'          => 0.15_03,
 		     'Test::More'            => 0,
                      'File::Spec'            => 0,
 	            },
