@@ -5,6 +5,15 @@
 # $Revision$
 ########################################################################
 
+[0.06] Released on 20060514
+
+     No functionality changes or bug fixes, just refactorings.
+
+     The all_code_files() function is now deprecated.  See
+     all_perl_files() in Perl::Critic::Utils instead
+
+     Now requires Perl::Critic version 0.15_03 or higher.
+
 [0.05] Released on 20060326
 
      Modified import() interface to pass all arguments to Perl::Critic.
