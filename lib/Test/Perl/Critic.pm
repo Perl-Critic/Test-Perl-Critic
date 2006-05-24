@@ -9,14 +9,16 @@ package Test::Perl::Critic;
 
 use strict;
 use warnings;
+use Carp qw(croak);
 use English qw(-no_match_vars);
 use File::Spec;
 use Test::Builder;
 use Perl::Critic;
 use Perl::Critic::Utils;
 
+#---------------------------------------------------------------------------
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 $VERSION = eval $VERSION;    ## no critic
 
 my $TEST        = Test::Builder->new();
@@ -46,15 +48,11 @@ sub import {
 sub critic_ok {
 
     my ( $file, $name ) = @_;
+    croak qq{no file specified} if !defined $file;
+    croak qq{'$file' does not exist} if !-f $file;
     $name ||= qq{Test::Perl::Critic for '$file'};
     my @violations = ();
     my $ok = 0;
-
-    if ( !-f $file ) {
-        $TEST->ok( 0, $name );
-        $TEST->diag( qq{'$file' does not exist} );
-        return;
-    }
 
     eval {
 	my $critic  = Perl::Critic->new( %CRITIC_ARGS );
@@ -76,9 +74,7 @@ sub critic_ok {
         $TEST->diag( qq{Perl::Critic found these violations in '$file':} );
 	$FORMAT =~ s{\%f}{$file}gmx; #HACK! Violation doesn't know the file
 
-        ## no critic
-	no warnings 'once';
-	local $Perl::Critic::Violation::FORMAT = $FORMAT;
+	Perl::Critic::Violation::set_format( $FORMAT );
         for my $viol (@violations) { $TEST->diag("$viol") }
     }
 
@@ -93,11 +89,8 @@ sub all_critic_ok {
     my @files = all_code_files( @dirs );
     $TEST->plan( tests => scalar @files );
 
-    my $ok = 1;
-    for my $file (@files) {
-        critic_ok( $file, $file ) or undef $ok;
-    }
-    return $ok;
+    my $okays = grep { critic_ok($_) } @files;
+    return $okays == @files;
 }
 
 #---------------------------------------------------------------------------
@@ -231,7 +224,7 @@ explanation of the formatting capabilities.  Valid escape characters
 are:
 
   Escape    Meaning
-  -------   ------------------------------------------------------------------
+  -------   ----------------------------------------------------------------------
   %m        Brief description of the violation
   %f        Name of the file where the violation occurred.
   %l        Line number where the violation occurred
@@ -239,7 +232,8 @@ are:
   %e        Explanation of violation or page numbers in PBP
   %d        Full diagnostic discussion of the violation
   %r        The string of source code that caused the violation
-  %p        Name of the Policy module that created the violation
+  %P        Name of the Policy module that created the violation
+  %p        Name of the Policy module without the 'Perl::Critic::Policy::' prefix
   %s        The severity level of the violation
 
 The default format is:
@@ -274,6 +268,8 @@ of author-only regression tests.
 Please report all bugs to L<http://rt.cpan.org>.  Thanks.
 
 =head1 SEE ALSO
+
+L<Module::Starter::PBP>
 
 L<Perl::Critic>
 

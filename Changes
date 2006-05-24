@@ -5,6 +5,10 @@
 # $Revision$
 ########################################################################
 
+[0.07] Released on ????????
+
+     All exceptions during testing are now fatal.
+
 [0.06] Released on 20060514
 
      No functionality changes or bug fixes, just refactorings.

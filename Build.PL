@@ -17,6 +17,7 @@ my $builder = Module::Build->new(
   license        => 'perl',
 
   requires       => {'Perl::Critic'          => 0.15_03,
+                     'Perl::Critic::Utils'   => 0.15_03,
 		     'Test::More'            => 0,
                      'File::Spec'            => 0,
 	            },
