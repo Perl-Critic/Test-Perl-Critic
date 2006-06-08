@@ -196,13 +196,13 @@ you will want to configure Test::Perl::Critic to do the same.
 
 Any arguments given to the C<use> pragma will be passed into the
 L<Perl::Critic> constructor.  For example, if you have developed your
-code using a custom f<.perlcritirc> file, you can ask
+code using a custom f<~/.perlcritirc> file, you can ask
 Test::Perl::Critic to use a custom file too:
 
   use Test::Perl::Critic (-profile => 't/perlcriticrc');
   all_critic_ok();
 
-Now place a copy of your own F<.perlcritic> file in the distribution
+Now place a copy of your own F<~/.perlcriticrc> file in the distribution
 as F<t/perlcriticrc>.  Then, C<critc_ok()> will be run on all Perl
 files in this distribution using this same Perl::Critic configuration.
 See the L<Perl::Critic> documentation for details on the
@@ -243,15 +243,15 @@ The default format is:
 =head1 CAVEATS
 
 Despite the obvious convenience of using test scripts to verify that
-your code complies with coding standards, its not really sensible to
-distribute your module with those scripts.  You don't know which
+your code complies with coding standards, it is not really sensible to
+distribute your module with those test scripts.  You don't know which
 version of Perl::Critic the user has and whether they have installed
-additional Policy modules, you can't really be sure that your code
+additional Policy modules, so you can't really be sure that your code
 will pass the Test::Perl::Critic tests on another machine.
 
-The easy solution is to add your F<criticize.t> test script to the
-F<MANIFEST.SKIP>.  When you test your build, you'll still be able to
-run the Perl::Critic tests when you C<'make test'>, but they won't be
+The easy solution is to add your F<perlcritic.t> test script to the
+F<MANIFEST.SKIP> file.  When you test your build, you'll still be able
+to run the Perl::Critic tests with C<'make test'>, but they won't be
 included in the tarball when you C<'make dist'>.
 
 See L<http://www.chrisdolan.net/talk/index.php/2005/11/14/private-regression-tests/>
@@ -278,7 +278,7 @@ L<Test::More>
 =head1 CREDITS
 
 Andy Lester, whose L<Test::Pod> module provided most of the code and
-documentation for Test::Critic.  Thanks, Andy.
+documentation for Test::Perl::Critic.  Thanks, Andy.
 
 =head1 AUTHOR
 
