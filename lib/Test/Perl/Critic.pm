@@ -196,14 +196,14 @@ you will want to configure Test::Perl::Critic to do the same.
 
 Any arguments given to the C<use> pragma will be passed into the
 L<Perl::Critic> constructor.  For example, if you have developed your
-code using a custom f<~/.perlcritirc> file, you can ask
-Test::Perl::Critic to use a custom file too:
+code using a custom f<~/.perlcriticrc> file, you can ask
+Test::Perl::Critic to use a custom file too.
 
   use Test::Perl::Critic (-profile => 't/perlcriticrc');
   all_critic_ok();
 
 Now place a copy of your own F<~/.perlcriticrc> file in the distribution
-as F<t/perlcriticrc>.  Then, C<critc_ok()> will be run on all Perl
+as F<t/perlcriticrc>.  Then, C<critic_ok()> will be run on all Perl
 files in this distribution using this same Perl::Critic configuration.
 See the L<Perl::Critic> documentation for details on the
 F<.perlcriticrc> file format.
@@ -262,6 +262,31 @@ of author-only regression tests.
 
   critic_ok()
   all_critic_ok()
+
+=head1 PERFORMANCE HACKS
+
+If you want a small performance boost, you can tell PPI to cache
+results from previous parsing runs.  Most of the processing time is in
+Perl::Critic, not PPI, so the speedup is not huge (only about 20%).
+Nonetheless, if your distribution is large, it's worth the effort.
+
+Add a block of code like the following to your test program, probably
+just before the call to C<all_critic_ok()>.  Be sure to adjust the
+path to the temp dir appropriately for your system.
+
+    use File::Spec;
+    my $cache_path = File::Spec->catdir(File::Spec->tmpdir,
+                                        "test-perl-critic-cache-$ENV{USER}");
+    if (!-d $cache_path) {
+       mkdir $cache_path, oct 700;
+    }
+    require PPI::Cache;
+    PPI::Cache->import(path => $cache_path);
+
+We recommend that you do NOT use this technique for tests that will go
+out to end-users.  They're probably going to only run the tests once,
+so they will not see the benefit of the caching but will still have
+files stored in their temp dir.
 
 =head1 BUGS
 
