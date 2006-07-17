@@ -55,9 +55,9 @@ sub critic_ok {
     my $ok = 0;
 
     eval {
-	my $critic  = Perl::Critic->new( %CRITIC_ARGS );
-	@violations = $critic->critique($file);
-	$ok         = !scalar @violations;
+        my $critic  = Perl::Critic->new( %CRITIC_ARGS );
+        @violations = $critic->critique($file);
+        $ok         = !scalar @violations;
     };
 
     # Evaluate results
@@ -65,16 +65,16 @@ sub critic_ok {
 
 
     if ($EVAL_ERROR) {           # Trap exceptions from P::C
-	$TEST->diag( "\n" );     # Just to get on a new line.
+        $TEST->diag( "\n" );     # Just to get on a new line.
         $TEST->diag( qq{Perl::Critic had errors in '$file':} );
-	$TEST->diag( qq{\t$EVAL_ERROR} );
+        $TEST->diag( qq{\t$EVAL_ERROR} );
     }
     elsif ( !$ok ) {                 # Report Policy violations
         $TEST->diag( "\n" );         # Just to get on a new line.
         $TEST->diag( qq{Perl::Critic found these violations in '$file':} );
-	$FORMAT =~ s{\%f}{$file}gmx; #HACK! Violation doesn't know the file
+        $FORMAT =~ s{\%f}{$file}gmx; #HACK! Violation doesn't know the file
 
-	Perl::Critic::Violation::set_format( $FORMAT );
+        Perl::Critic::Violation::set_format( $FORMAT );
         for my $viol (@violations) { $TEST->diag("$viol") }
     }
 
@@ -117,7 +117,7 @@ __END__
 
 =head1 NAME
 
-Test::Perl::Critic - Use Perl::Critic in test scripts
+Test::Perl::Critic - Use Perl::Critic in test programs
 
 =head1 SYNOPSIS
 
@@ -130,7 +130,7 @@ Test::Perl::Critic - Use Perl::Critic in test scripts
 =head1 DESCRIPTION
 
 Test::Perl::Critic wraps the L<Perl::Critic> engine in a convenient
-subroutine suitable for test scripts written for L<Test::Harness>.
+subroutine suitable for test programs written using the L<Test::More> framework.
 This makes it easy to integrate coding-standards enforcement into the
 build process.  For ultimate convenience (at the expense of some
 flexibility), see the L<criticism> pragma.
@@ -163,7 +163,7 @@ just make a F<t/perlcritic.t> file like this:
   all_critic_ok();
 
 Or if you use a the latest version of L<Module::Starter::PBP>, it will
-generate this and several other standard test scripts for you.
+generate this and several other standard test programs for you.
 
 =item all_code_files ( [@DIRECTORIES] )
 
@@ -196,7 +196,7 @@ you will want to configure Test::Perl::Critic to do the same.
 
 Any arguments given to the C<use> pragma will be passed into the
 L<Perl::Critic> constructor.  For example, if you have developed your
-code using a custom f<~/.perlcriticrc> file, you can ask
+code using a custom F<~/.perlcriticrc> file, you can ask
 Test::Perl::Critic to use a custom file too.
 
   use Test::Perl::Critic (-profile => 't/perlcriticrc');
@@ -242,14 +242,14 @@ The default format is:
 
 =head1 CAVEATS
 
-Despite the obvious convenience of using test scripts to verify that
+Despite the obvious convenience of using test programs to verify that
 your code complies with coding standards, it is not really sensible to
-distribute your module with those test scripts.  You don't know which
+distribute your module with those test programs.  You don't know which
 version of Perl::Critic the user has and whether they have installed
 additional Policy modules, so you can't really be sure that your code
 will pass the Test::Perl::Critic tests on another machine.
 
-The easy solution is to add your F<perlcritic.t> test script to the
+The easy solution is to add your F<perlcritic.t> test program to the
 F<MANIFEST.SKIP> file.  When you test your build, you'll still be able
 to run the Perl::Critic tests with C<'make test'>, but they won't be
 included in the tarball when you C<'make dist'>.
