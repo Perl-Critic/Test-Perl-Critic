@@ -16,10 +16,9 @@ use Test::Builder;
 use Perl::Critic;
 use Perl::Critic::Utils;
 
-#---------------------------------------------------------------------------
+our $VERSION = 0.07;
 
-our $VERSION = '0.07';
-$VERSION = eval $VERSION;    ## no critic
+#---------------------------------------------------------------------------
 
 my $TEST        = Test::Builder->new();
 my $FORMAT      = undef;
@@ -37,7 +36,11 @@ sub import {
     *{ $caller . '::all_critic_ok' } = \&all_critic_ok;
 
     $TEST->exported_to($caller);
-    $FORMAT = delete $args{'-format'} || "\t%m at line %l, column %c. %e";
+
+    my $verbosity = $args{-verbose} || $args{-format} || 3;
+    my $is_integer = $verbosity =~ m{ \A [+-]? \d+ \z }mx;
+    $FORMAT = $is_integer ? verbosity_to_format( $verbosity ) : $verbosity;
+
     %CRITIC_ARGS = %args;
 
     return 1;
@@ -49,8 +52,8 @@ sub critic_ok {
 
     my ( $file, $name ) = @_;
     croak qq{no file specified} if !defined $file;
-    croak qq{'$file' does not exist} if !-f $file;
-    $name ||= qq{Test::Perl::Critic for '$file'};
+    croak qq{"$file" does not exist} if !-f $file;
+    $name ||= qq{Test::Perl::Critic for "$file"};
     my @violations = ();
     my $ok = 0;
 
@@ -66,12 +69,12 @@ sub critic_ok {
 
     if ($EVAL_ERROR) {           # Trap exceptions from P::C
         $TEST->diag( "\n" );     # Just to get on a new line.
-        $TEST->diag( qq{Perl::Critic had errors in '$file':} );
+        $TEST->diag( qq{Perl::Critic had errors in "$file":} );
         $TEST->diag( qq{\t$EVAL_ERROR} );
     }
     elsif ( !$ok ) {                 # Report Policy violations
         $TEST->diag( "\n" );         # Just to get on a new line.
-        $TEST->diag( qq{Perl::Critic found these violations in '$file':} );
+        $TEST->diag( qq{Perl::Critic found these violations in "$file":} );
         $FORMAT =~ s{\%f}{$file}gmx; #HACK! Violation doesn't know the file
 
         Perl::Critic::Violation::set_format( $FORMAT );
@@ -97,7 +100,7 @@ sub all_critic_ok {
 
 sub all_code_files {
     my @dirs = @_ ? @_ : _starting_points();
-    return Perl::Critic::Utils::all_perl_files(@dirs);
+    return all_perl_files(@dirs);
 }
 
 #---------------------------------------------------------------------------
@@ -190,7 +193,7 @@ A Perl file is:
 =head1 CONFIGURATION
 
 L<Perl::Critic> is highly configurable.  By default, Test::Perl::Critic
-invokes Perl::Critic with its default configuration.  But if you have
+invokes Perl::Critic with it's default configuration.  But if you have
 developed your code against a custom Perl::Critic configuration,
 you will want to configure Test::Perl::Critic to do the same.
 
@@ -213,32 +216,50 @@ F<.perlcriticrc> file format.
 By default, Test::Perl::Critic displays basic information about each
 Policy violation in the diagnostic output of the test.  You can
 customize the format and content of this information by giving an
-additional C<-format> option to the C<use> pragma.  For example:
+additional C<-verbose> option to the C<use> pragma.  This behaves
+exactly like the C<-verbose> switch on the F<perlcritic> program.  For
+example:
 
-  use Test::Perl::Critic (-format => "%m at line %l, column %c.");
-  all_critic_ok();
+  use Test::Perl::Critic (-verbose => 6);
+
+  #or...
+
+  use Test::Perl::Critic (-verbose => '%f: %m at %l');
+
+If given a number, Test::Perl::Critic reports violations using one of
+the predefined formats described below. If given a string, it is
+interpreted to be an actual format specification. If the -verbose
+option is not specified, it defaults to 3.
+
+    Verbosity     Format Specification
+    -----------   --------------------------------------------------------------------
+     1            "%f:%l:%c:%m\n",
+     2            "%f: (%l:%c) %m\n",
+     3            "%m at line %l, column %c.  %e.  (Severity: %s)\n",
+     4            "%f: %m at line %l, column %c.  %e.  (Severity: %s)\n",
+     5            "%m at line %l, near '%r'.  (Severity: %s)\n",
+     6            "%f: %m at line %l near '%r'.  (Severity: %s)\n",
+     7            "[%p] %m at line %l, column %c.  (Severity: %s)\n",
+     8            "[%p] %m at line %l, near '%r'.  (Severity: %s)\n",
+     9            "%m at line %l, column %c.\n  %p (Severity: %s)\n%d\n",
+    10            "%m at line %l, near '%r'.\n  %p (Severity: %s)\n%d\n"
 
 Formats are a combination of literal and escape characters similar to
-the way C<sprintf> works.  See L<String::Format> for a full
-explanation of the formatting capabilities.  Valid escape characters
-are:
+the way sprintf works. See String::Format for a full explanation of
+the formatting capabilities. Valid escape characters are:
 
-  Escape    Meaning
-  -------   ----------------------------------------------------------------------
-  %m        Brief description of the violation
-  %f        Name of the file where the violation occurred.
-  %l        Line number where the violation occurred
-  %c        Column number where the violation occurred
-  %e        Explanation of violation or page numbers in PBP
-  %d        Full diagnostic discussion of the violation
-  %r        The string of source code that caused the violation
-  %P        Name of the Policy module that created the violation
-  %p        Name of the Policy module without the 'Perl::Critic::Policy::' prefix
-  %s        The severity level of the violation
-
-The default format is:
-
-  "\t%m at line %l, column %c. %e"
+    Escape    Meaning
+    -------   ------------------------------------------------------------------------
+    %m        Brief description of the violation
+    %f        Name of the file where the violation occurred.
+    %l        Line number where the violation occurred
+    %c        Column number where the violation occurred
+    %e        Explanation of violation or page numbers in PBP
+    %d        Full diagnostic discussion of the violation
+    %r        The string of source code that caused the violation
+    %P        Name of the Policy module that created the violation
+    %p        Name of the Policy without the Perl::Critic::Policy:: prefix
+    %s        The severity level of the violation
 
 =head1 CAVEATS
 
@@ -251,8 +272,8 @@ will pass the Test::Perl::Critic tests on another machine.
 
 The easy solution is to add your F<perlcritic.t> test program to the
 F<MANIFEST.SKIP> file.  When you test your build, you'll still be able
-to run the Perl::Critic tests with C<'make test'>, but they won't be
-included in the tarball when you C<'make dist'>.
+to run the Perl::Critic tests with C<"make test">, but they won't be
+included in the tarball when you C<"make dist">.
 
 See L<http://www.chrisdolan.net/talk/index.php/2005/11/14/private-regression-tests/>
 for an interesting discussion about Test::Perl::Critic and other types
