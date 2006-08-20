@@ -7,8 +7,8 @@ abstract: Use Perl::Critic in test scripts
 license: perl
 requires:
   File::Spec: 0
-  Perl::Critic: 0.1503
-  Perl::Critic::Utils: 0.1503
+  Perl::Critic: 0.19
+  Perl::Critic::Utils: 0.19
   Test::More: 0
 provides:
   Test::Perl::Critic:

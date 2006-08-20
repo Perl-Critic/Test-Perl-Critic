@@ -51,7 +51,7 @@ sub import {
 sub critic_ok {
 
     my ( $file, $name ) = @_;
-    croak qq{no file specified} if !defined $file;
+    croak q{no file specified} if !defined $file;
     croak qq{"$file" does not exist} if !-f $file;
     $name ||= qq{Test::Perl::Critic for "$file"};
     my @violations = ();
@@ -133,10 +133,10 @@ Test::Perl::Critic - Use Perl::Critic in test programs
 =head1 DESCRIPTION
 
 Test::Perl::Critic wraps the L<Perl::Critic> engine in a convenient
-subroutine suitable for test programs written using the L<Test::More> framework.
-This makes it easy to integrate coding-standards enforcement into the
-build process.  For ultimate convenience (at the expense of some
-flexibility), see the L<criticism> pragma.
+subroutine suitable for test programs written using the L<Test::More>
+framework.  This makes it easy to integrate coding-standards
+enforcement into the build process.  For ultimate convenience (at the
+expense of some flexibility), see the L<criticism> pragma.
 
 =head1 SUBROUTINES
 
@@ -160,12 +160,10 @@ files are okay, or false if any file fails.
 If you are building a module with the usual CPAN directory structure,
 just make a F<t/perlcritic.t> file like this:
 
-  use Test::More;
-  eval 'use Test::Perl::Critic';
-  plan skip_all => 'Test::Perl::Critic required to criticise code' if $@;
+  use Test::Perl::Critic;
   all_critic_ok();
 
-Or if you use a the latest version of L<Module::Starter::PBP>, it will
+Or if you use the latest version of L<Module::Starter::PBP>, it will
 generate this and several other standard test programs for you.
 
 =item all_code_files ( [@DIRECTORIES] )
@@ -192,15 +190,16 @@ A Perl file is:
 
 =head1 CONFIGURATION
 
-L<Perl::Critic> is highly configurable.  By default, Test::Perl::Critic
-invokes Perl::Critic with it's default configuration.  But if you have
-developed your code against a custom Perl::Critic configuration,
-you will want to configure Test::Perl::Critic to do the same.
+L<Perl::Critic> is highly configurable.  By default,
+Test::Perl::Critic invokes Perl::Critic with it's default
+configuration.  But if you have developed your code against a custom
+Perl::Critic configuration, you will want to configure
+Test::Perl::Critic to do the same.
 
 Any arguments given to the C<use> pragma will be passed into the
-L<Perl::Critic> constructor.  For example, if you have developed your
-code using a custom F<~/.perlcriticrc> file, you can ask
-Test::Perl::Critic to use a custom file too.
+L<Perl::Critic> constructor.  So if you have developed your code using
+a custom F<~/.perlcriticrc> file, you can ask Test::Perl::Critic to
+use a custom file too.
 
   use Test::Perl::Critic (-profile => 't/perlcriticrc');
   all_critic_ok();
@@ -210,6 +209,17 @@ as F<t/perlcriticrc>.  Then, C<critic_ok()> will be run on all Perl
 files in this distribution using this same Perl::Critic configuration.
 See the L<Perl::Critic> documentation for details on the
 F<.perlcriticrc> file format.
+
+Any argument that is supported by the L<Perl::Critic> constructor can
+be passed through this interface.  For example, you can also set the
+minimum severity level, or include & exclude specific policies like
+this:
+
+  use Test::Perl::Critic (-severity => 2, -exclude => ['RequireRcsKeywords']);
+  all_critic_ok();
+
+See the L<Perl::Critic> documentation for complete details on it's
+options and arguments.
 
 =head1 DIAGNOSTIC DETAILS
 
