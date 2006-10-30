@@ -303,7 +303,7 @@ Nonetheless, if your distribution is large, it's worth the effort.
 
 Add a block of code like the following to your test program, probably
 just before the call to C<all_critic_ok()>.  Be sure to adjust the
-path to the temp dir appropriately for your system.
+path to the temp directory appropriately for your system.
 
     use File::Spec;
     my $cache_path = File::Spec->catdir(File::Spec->tmpdir,
@@ -317,7 +317,7 @@ path to the temp dir appropriately for your system.
 We recommend that you do NOT use this technique for tests that will go
 out to end-users.  They're probably going to only run the tests once,
 so they will not see the benefit of the caching but will still have
-files stored in their temp dir.
+files stored in their temp directory.
 
 =head1 BUGS
 
