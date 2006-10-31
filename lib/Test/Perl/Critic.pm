@@ -11,17 +11,16 @@ use strict;
 use warnings;
 use Carp qw(croak);
 use English qw(-no_match_vars);
-use File::Spec;
-use Test::Builder;
-use Perl::Critic;
+use Test::Builder qw();
+use Perl::Critic qw();
+use Perl::Critic::Violation qw();
 use Perl::Critic::Utils;
 
-our $VERSION = 0.07;
+our $VERSION = 0.08;
 
 #---------------------------------------------------------------------------
 
 my $TEST        = Test::Builder->new();
-my $FORMAT      = undef;
 my %CRITIC_ARGS = ();
 
 #---------------------------------------------------------------------------
@@ -37,10 +36,8 @@ sub import {
 
     $TEST->exported_to($caller);
 
-    my $verbosity = $args{-verbose} || $args{-format} || 3;
-    my $is_integer = $verbosity =~ m{ \A [+-]? \d+ \z }mx;
-    $FORMAT = $is_integer ? verbosity_to_format( $verbosity ) : $verbosity;
-
+    # -format is supported for backward compatibility
+    if( exists $args{-format} ){ $args{-verbose} = $args{-format}; }
     %CRITIC_ARGS = %args;
 
     return 1;
@@ -50,21 +47,25 @@ sub import {
 
 sub critic_ok {
 
-    my ( $file, $name ) = @_;
-    croak q{no file specified} if !defined $file;
-    croak qq{"$file" does not exist} if !-f $file;
-    $name ||= qq{Test::Perl::Critic for "$file"};
+    my ( $file, $test_name ) = @_;
+    croak q{no file specified} if not defined $file;
+    croak qq{"$file" does not exist} if not -f $file;
+    $test_name ||= qq{Test::Perl::Critic for "$file"};
+
+    my $critic = undef;
     my @violations = ();
     my $ok = 0;
 
+    # Run Perl::Critic
     eval {
-        my $critic  = Perl::Critic->new( %CRITIC_ARGS );
-        @violations = $critic->critique($file);
-        $ok         = !scalar @violations;
+        # TODO: Should $critic be a global singleton?
+        $critic     = Perl::Critic->new( %CRITIC_ARGS );
+        @violations = $critic->critique( $file );
+        $ok         = not scalar @violations;
     };
 
     # Evaluate results
-    $TEST->ok( $ok, $name );
+    $TEST->ok( $ok, $test_name );
 
 
     if ($EVAL_ERROR) {           # Trap exceptions from P::C
@@ -72,12 +73,12 @@ sub critic_ok {
         $TEST->diag( qq{Perl::Critic had errors in "$file":} );
         $TEST->diag( qq{\t$EVAL_ERROR} );
     }
-    elsif ( !$ok ) {                 # Report Policy violations
-        $TEST->diag( "\n" );         # Just to get on a new line.
+    elsif ( not $ok ) {          # Report Policy violations
+        $TEST->diag( "\n" );     # Just to get on a new line.
         $TEST->diag( qq{Perl::Critic found these violations in "$file":} );
-        $FORMAT =~ s{\%f}{$file}gmx; #HACK! Violation doesn't know the file
 
-        Perl::Critic::Violation::set_format( $FORMAT );
+        my $verbose = $critic->config->verbose();
+        Perl::Critic::Violation::set_format( $verbose );
         for my $viol (@violations) { $TEST->diag("$viol") }
     }
 
@@ -100,7 +101,7 @@ sub all_critic_ok {
 
 sub all_code_files {
     my @dirs = @_ ? @_ : _starting_points();
-    return all_perl_files(@dirs);
+    return Perl::Critic::Utils::all_perl_files(@dirs);
 }
 
 #---------------------------------------------------------------------------
