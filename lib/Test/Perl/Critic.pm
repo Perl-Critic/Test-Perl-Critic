@@ -139,6 +139,23 @@ framework.  This makes it easy to integrate coding-standards
 enforcement into the build process.  For ultimate convenience (at the
 expense of some flexibility), see the L<criticism> pragma.
 
+If you'd like to try L<Perl::Critic> without installing anything,
+there is a web-service available at L<http://perlcritic.com>.  The
+web-service does not yet support all the configuration features that
+are available in the native Perl::Critic API, but it should give you a
+good idea of what it does.  You can also invoke the perlcritic
+web-service from the command line by doing an HTTP-post, such as one
+of these:
+
+    $> POST http://perlcritic.com/perl/critic.pl < MyModule.pm
+    $> lwp-request -m POST http://perlcritic.com/perl/critic.pl < MyModule.pm
+    $> wget -q -O - --post-file=MyModule.pm http://perlcritic.com/perl/critic.pl
+
+Please note that the perlcritic web-service is still alpha code.  The
+URL and interface to the service are subject to change.
+
+
+
 =head1 SUBROUTINES
 
 =over 8
