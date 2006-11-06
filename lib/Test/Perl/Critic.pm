@@ -262,33 +262,34 @@ interpreted to be an actual format specification. If the -verbose
 option is not specified, it defaults to 3.
 
     Verbosity     Format Specification
-    -----------   --------------------------------------------------------------------
+    -----------   -------------------------------------------------------------
      1            "%f:%l:%c:%m\n",
      2            "%f: (%l:%c) %m\n",
-     3            "%m at line %l, column %c.  %e.  (Severity: %s)\n",
-     4            "%f: %m at line %l, column %c.  %e.  (Severity: %s)\n",
-     5            "%m at line %l, near '%r'.  (Severity: %s)\n",
-     6            "%f: %m at line %l near '%r'.  (Severity: %s)\n",
-     7            "[%p] %m at line %l, column %c.  (Severity: %s)\n",
-     8            "[%p] %m at line %l, near '%r'.  (Severity: %s)\n",
-     9            "%m at line %l, column %c.\n  %p (Severity: %s)\n%d\n",
-    10            "%m at line %l, near '%r'.\n  %p (Severity: %s)\n%d\n"
+     3            "%m at %f line %l\n",
+     4            "%m at line %l, column %c.  %e.  (Severity: %s)\n",
+     5            "%f: %m at line %l, column %c.  %e.  (Severity: %s)\n",
+     6            "%m at line %l, near '%r'.  (Severity: %s)\n",
+     7            "%f: %m at line %l near '%r'.  (Severity: %s)\n",
+     8            "[%p] %m at line %l, column %c.  (Severity: %s)\n",
+     9            "[%p] %m at line %l, near '%r'.  (Severity: %s)\n",
+    10            "%m at line %l, column %c.\n  %p (Severity: %s)\n%d\n",
+    11            "%m at line %l, near '%r'.\n  %p (Severity: %s)\n%d\n"
 
 Formats are a combination of literal and escape characters similar to
 the way sprintf works. See String::Format for a full explanation of
 the formatting capabilities. Valid escape characters are:
 
     Escape    Meaning
-    -------   ------------------------------------------------------------------------
-    %m        Brief description of the violation
+    -------   ----------------------------------------------------------------
+    %c        Column number where the violation occurred
+    %d        Full diagnostic discussion of the violation
+    %e        Explanation of violation or page numbers in PBP
     %f        Name of the file where the violation occurred.
     %l        Line number where the violation occurred
-    %c        Column number where the violation occurred
-    %e        Explanation of violation or page numbers in PBP
-    %d        Full diagnostic discussion of the violation
-    %r        The string of source code that caused the violation
+    %m        Brief description of the violation
     %P        Name of the Policy module that created the violation
     %p        Name of the Policy without the Perl::Critic::Policy:: prefix
+    %r        The string of source code that caused the violation
     %s        The severity level of the violation
 
 =head1 CAVEATS
