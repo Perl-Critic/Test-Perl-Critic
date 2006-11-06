@@ -15,6 +15,20 @@ DESCRIPTION
     into the build process. For ultimate convenience (at the expense of some
     flexibility), see the criticism pragma.
 
+    If you'd like to try Perl::Critic without installing anything, there is
+    a web-service available at <http://perlcritic.com>. The web-service does
+    not yet support all the configuration features that are available in the
+    native Perl::Critic API, but it should give you a good idea of what it
+    does. You can also invoke the perlcritic web-service from the command
+    line by doing an HTTP-post, such as one of these:
+
+        $> POST http://perlcritic.com/perl/critic.pl < MyModule.pm
+        $> lwp-request -m POST http://perlcritic.com/perl/critic.pl < MyModule.pm
+        $> wget -q -O - --post-file=MyModule.pm http://perlcritic.com/perl/critic.pl
+
+    Please note that the perlcritic web-service is still alpha code. The URL
+    and interface to the service are subject to change.
+
 SUBROUTINES
     critic_ok( FILE [, TEST_NAME ] )
             Okays the test if Perl::Critic does not find any violations in
@@ -161,7 +175,7 @@ PERFORMANCE HACKS
 
     Add a block of code like the following to your test program, probably
     just before the call to "all_critic_ok()". Be sure to adjust the path to
-    the temp dir appropriately for your system.
+    the temp directory appropriately for your system.
 
         use File::Spec;
         my $cache_path = File::Spec->catdir(File::Spec->tmpdir,
@@ -175,7 +189,7 @@ PERFORMANCE HACKS
     We recommend that you do NOT use this technique for tests that will go
     out to end-users. They're probably going to only run the tests once, so
     they will not see the benefit of the caching but will still have files
-    stored in their temp dir.
+    stored in their temp directory.
 
 BUGS
     Please report all bugs to <http://rt.cpan.org>. Thanks.

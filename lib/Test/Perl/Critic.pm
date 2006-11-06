@@ -119,6 +119,8 @@ __END__
 
 =pod
 
+=for stopwords API
+
 =head1 NAME
 
 Test::Perl::Critic - Use Perl::Critic in test programs
