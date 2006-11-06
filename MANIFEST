@@ -5,12 +5,9 @@ lib/Test/Perl/Critic.pm
 LICENSE
 Makefile.PL
 MANIFEST			This list of files
+META.yml
 README
 t/00_compile.t
 t/01_api.t
-t/02_critic_ok.t
-t/03_all_critic_ok.t
-t/04_distro_critic_ok.t
 t/98_pod_syntax.t
 t/99_pod_coverage.t
-META.yml
