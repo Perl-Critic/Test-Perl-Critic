@@ -127,11 +127,21 @@ Test::Perl::Critic - Use Perl::Critic in test programs
 
 =head1 SYNOPSIS
 
-  use Test::Perl::Critic;
+Test one file:
 
-  critic_ok($file);                          #Test one file
-  all_critic_ok($dir_1, $dir_2, $dir_N );    #Test all files in several $dirs
-  all_critic_ok()                            #Test all files in distro
+  use Test::Perl::Critic;
+  use Test::More tests => 1;
+  critic_ok($file);
+
+or test all files in one or more directories:
+
+  use Test::Perl::Critic;
+  all_critic_ok($dir_1, $dir_2, $dir_N );
+
+or test all files in a distribution (recommended):
+
+  use Test::Perl::Critic;
+  all_critic_ok();
 
 =head1 DESCRIPTION
 
@@ -169,6 +179,8 @@ If it does, the violations will be reported in the test diagnostics.
 The optional second argument is the name of test, which defaults to
 "Perl::Critic test for FILE".
 
+If you use this form, you should emit your own L<Test::More> plan first.
+
 =item all_critic_ok( [@DIRECTORIES] )
 
 Runs C<critic_ok()> for all Perl files beneath the given list of
@@ -185,6 +197,9 @@ just make a F<t/perlcritic.t> file like this:
 
 Or if you use the latest version of L<Module::Starter::PBP>, it will
 generate this and several other standard test programs for you.
+
+This subroutine emits its own L<Test::More> plan, so you do not need
+to specify an expected number of tests yourself.
 
 =item all_code_files ( [@DIRECTORIES] )
 
