@@ -146,7 +146,7 @@ Or test all files in a distribution:
   use Test::Perl::Critic;
   all_critic_ok();
 
-Recommended usage for CPAN distros:
+Recommended usage for CPAN distributions:
 
   use strict;
   use warnings;
