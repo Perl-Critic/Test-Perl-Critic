@@ -5,6 +5,13 @@
 # $Revision$
 ########################################################################
 
+[1.00] Released on ????-??-??
+
+     Edited documentation.  Includes better example for using
+     Test::Perl::Critic in CPAN distributions.
+
+     No code changes.
+
 [0.08] Released on 2006-11-05
 
      All parameters to Test::Perl::Critic can now be controlled through
