@@ -9,5 +9,7 @@ META.yml
 README
 t/00_compile.t
 t/01_api.t
+t/96_perlcritic.t
 t/98_pod_syntax.t
 t/99_pod_coverage.t
+t/perlcriticrc

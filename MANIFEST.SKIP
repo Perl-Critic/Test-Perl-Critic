@@ -31,8 +31,6 @@ RCS
 \.rej$
 \.old$
 ^t/00_local_.*t$
-^t/perlcriticrc$
-^tools
 
 # Temp/backup files
 ~$

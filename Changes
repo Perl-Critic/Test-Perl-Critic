@@ -10,6 +10,9 @@
      Edited documentation.  Includes better example for using
      Test::Perl::Critic in CPAN distributions.
 
+     Added a t/perlcritic.t test to further demonstrate the typical
+     usage for CPAN distributions.
+
      No code changes.
 
 [0.08] Released on 2006-11-05

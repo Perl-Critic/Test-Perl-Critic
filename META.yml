@@ -1,10 +1,12 @@
 ---
 name: Test-Perl-Critic
-version: 0.08
+version: 1
 author:
   - Jeffrey Thalhammer <thaljef@cpan.org>
 abstract: Use Perl::Critic in test scripts
 license: perl
+resources:
+  license: http://dev.perl.org/licenses/
 requires:
   Perl::Critic: 0.21
   Perl::Critic::Utils: 0.21
@@ -13,5 +15,8 @@ requires:
 provides:
   Test::Perl::Critic:
     file: lib/Test/Perl/Critic.pm
-    version: 0.08
-generated_by: Module::Build version 0.2611
+    version: 1
+generated_by: Module::Build version 0.2806
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.2.html
+  version: 1.2
