@@ -1,6 +1,6 @@
 ---
 name: Test-Perl-Critic
-version: 1
+version: 1.01
 author:
   - Jeffrey Thalhammer <thaljef@cpan.org>
 abstract: Use Perl::Critic in test scripts
@@ -15,7 +15,7 @@ requires:
 provides:
   Test::Perl::Critic:
     file: lib/Test/Perl/Critic.pm
-    version: 1
+    version: 1.01
 generated_by: Module::Build version 0.2806
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html
