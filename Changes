@@ -5,7 +5,10 @@
 # $Revision$
 ########################################################################
 
-[1.00] Released on ????-??-??
+[1.01] Released on 2007-01-24
+
+     PRODUCTION RELEASE: You may now consider the public API of
+     Test::Perl::Critic as stable.
 
      Edited documentation.  Includes better example for using
      Test::Perl::Critic in CPAN distributions.
