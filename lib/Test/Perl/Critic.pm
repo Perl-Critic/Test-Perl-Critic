@@ -246,7 +246,7 @@ A Perl file is:
 =head1 CONFIGURATION
 
 L<Perl::Critic> is highly configurable.  By default,
-Test::Perl::Critic invokes Perl::Critic with it's default
+Test::Perl::Critic invokes Perl::Critic with its default
 configuration.  But if you have developed your code against a custom
 Perl::Critic configuration, you will want to configure
 Test::Perl::Critic to do the same.
@@ -273,7 +273,7 @@ this:
   use Test::Perl::Critic (-severity => 2, -exclude => ['RequireRcsKeywords']);
   all_critic_ok();
 
-See the L<Perl::Critic> documentation for complete details on it's
+See the L<Perl::Critic> documentation for complete details on its
 options and arguments.
 
 =head1 DIAGNOSTIC DETAILS
