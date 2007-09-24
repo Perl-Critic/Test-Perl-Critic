@@ -179,6 +179,9 @@ framework.  This makes it easy to integrate coding-standards
 enforcement into the build process.  For ultimate convenience (at the
 expense of some flexibility), see the L<criticism> pragma.
 
+If you have an large existing code base, you might prefer to use
+L<Test::Perl::Critic::Progressive>.
+
 If you'd like to try L<Perl::Critic> without installing anything,
 there is a web-service available at L<http://perlcritic.com>.  The
 web-service does not yet support all the configuration features that
