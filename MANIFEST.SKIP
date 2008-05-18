@@ -1,4 +1,6 @@
-README.developer
+^Test-Perl-Critic-
+
+## Below here are generic entries that apply to any project ##
 
 # Version Control files
 ^\.cvsignore$
@@ -28,9 +30,11 @@ RCS
 ^pm_to_blib$
 ^Makefile.old$
 ^patch
+\.patch$
 \.rej$
 \.old$
 ^t/00_local_.*t$
+^tags$
 
 # Temp/backup files
 ~$
@@ -40,15 +44,14 @@ RCS
 \.tmp$
 \.\#.+
 \#$
+\.swp$
+\.vim_backup$
 
 # Mac/SMB files
 \.DS_Store
 ^\._.+
+\bIcon\x0d
 
 # Flash development
 \.swd$
 ^test\.swf$
-
-# Author-time tests
-40_criticize\.t$
-97_spelling\.t$

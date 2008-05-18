@@ -5,6 +5,11 @@
 # $Revision$
 ########################################################################
 
+[1.xx] Released on 2008-xx-xx
+
+     Documentation changes.  META.yml "enhancements".  Moved author
+     tests out of the way of normal testing.
+
 [1.01] Released on 2007-01-24
 
      PRODUCTION RELEASE: You may now consider the public API of
