@@ -92,7 +92,11 @@ sub critic_ok {
 
 sub all_critic_ok {
 
-    my @dirs = @_ ? @_ : _starting_points();
+    my @dirs = @_;
+    if (not @dirs) {
+        @dirs = _starting_points();
+    }
+
     my @files = all_code_files( @dirs );
     $TEST->plan( tests => scalar @files );
 
@@ -103,7 +107,12 @@ sub all_critic_ok {
 #---------------------------------------------------------------------------
 
 sub all_code_files {
-    my @dirs = @_ ? @_ : _starting_points();
+
+    my @dirs = @_;
+    if (not @dirs) {
+        @dirs = _starting_points();
+    }
+
     return Perl::Critic::Utils::all_perl_files(@dirs);
 }
 
