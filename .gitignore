@@ -1,0 +1,10 @@
+Build
+MANIFEST
+META.yml
+Makefile
+Test-Perl-Critic-*
+_build*
+blib*
+cover_db
+pod2htmd.tmp
+pod2htmi.tmp

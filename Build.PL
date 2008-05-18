@@ -13,6 +13,14 @@ use Module::Build;
 
 my $class = Module::Build->subclass( code => <<'END_SUBCLASS' );
 
+    sub ACTION_test {
+        my ($self) = @_;
+
+        $self->depends_on('manifest');
+
+        return $self->SUPER::ACTION_test();
+    }
+
     sub ACTION_authortest {
         my ($self) = @_;
 
@@ -39,11 +47,16 @@ my $class = Module::Build->subclass( code => <<'END_SUBCLASS' );
 END_SUBCLASS
 
 my $builder = $class->new(
-    module_name    => 'Test::Perl::Critic',
-    dist_author    => 'Jeffrey Thalhammer <thaljef@cpan.org>',
-    dist_abstract  => 'Use Perl::Critic in test programs.',
-    license        => 'perl',
-    requires       => {
+    module_name     => 'Test::Perl::Critic',
+    dist_author     => 'Jeffrey Thalhammer <thaljef@cpan.org>',
+    dist_abstract   => 'Use Perl::Critic in test programs.',
+    license         => 'perl',
+    dynamic_config  => 1,
+    create_readme   => 1,
+    create_packlist => 1,
+    sign            => 0,
+
+    requires        => {
         'Carp'                      => 0,
         'English'                   => 0,
         'Perl::Critic'              => 1.082,
@@ -53,9 +66,11 @@ my $builder = $class->new(
         'Test::Builder'             => 0,
         'warnings'                  => 0,
     },
+
     build_requires       => {
         'Test::More'                => 0,
     },
+
     meta_merge      => {
         resources   => {
             homepage    => 'http://perlcritic.com',
