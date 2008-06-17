@@ -7,10 +7,14 @@
 
 package Test::Perl::Critic;
 
+use 5.006001;
+
 use strict;
 use warnings;
-use Carp qw(croak);
+
 use English qw(-no_match_vars);
+use Carp qw(croak);
+
 use Test::Builder qw();
 use Perl::Critic qw();
 use Perl::Critic::Violation qw();
@@ -40,7 +44,7 @@ sub import {
     $TEST->exported_to($caller);
 
     # -format is supported for backward compatibility
-    if( exists $args{-format} ){ $args{-verbose} = $args{-format}; }
+    if ( exists $args{-format} ) { $args{-verbose} = $args{-format}; }
     %CRITIC_ARGS = %args;
 
     return 1;
