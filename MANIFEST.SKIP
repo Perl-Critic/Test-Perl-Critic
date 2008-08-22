@@ -55,3 +55,6 @@ RCS
 # Flash development
 \.swd$
 ^test\.swf$
+
+# Avoid Eclipse files.
+\.project\b
