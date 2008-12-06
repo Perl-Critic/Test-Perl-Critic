@@ -214,7 +214,7 @@ URL and interface to the service are subject to change.
 
 =head1 SUBROUTINES
 
-=over 8
+=over
 
 =item critic_ok( $FILE [, $TEST_NAME ] )
 
@@ -249,7 +249,7 @@ directories.
 
 A Perl file is:
 
-=over 4
+=over
 
 =item * Any file that ends in F<.PL>, F<.pl>, F<.pm>, or F<.t>
 
