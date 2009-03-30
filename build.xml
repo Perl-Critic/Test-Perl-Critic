@@ -37,12 +37,11 @@ Enjoy!!
 
     <macrodef name="module.build">
         <attribute name="action" default="build" />
-        <element name="exec.extras" optional="yes" />
         <sequential>
             <exec executable="${perl.exe}" failonerror="true">
                 <arg value="${builder}" />
                 <arg value="@{action}" />
-                <exec.extras />
+                <env key='PATH' path="${path.prepend}:${env.PATH}" />
             </exec>
         </sequential>
     </macrodef>
@@ -77,18 +76,8 @@ Enjoy!!
     </target>
 
 
-    <target name="testunit" depends="init" description="Build testunit">
-        <module.build action="testunit" />
-    </target>
-
-
-    <target name="testfunctional" depends="init" description="Build testfunctional">
-        <module.build action="testfunctional" />
-    </target>
-
-
-    <target name="testauthor" depends="init" description="Build testauthor">
-        <module.build action="testauthor" />
+    <target name="authortest" depends="init" description="Build authortest">
+        <module.build action="authortest" />
     </target>
 
 
@@ -103,14 +92,7 @@ Enjoy!!
 
 
     <target name="testcover" depends="init" description="Build testcover">
-        <module.build action="testcover">
-            <exec.extras>
-                <!-- set the $path.prepend property if "cover" is
-                 not installed in the standard place -->
-
-                <env key="PATH" path="${path.prepend}:${env.PATH}" />
-            </exec.extras>
-        </module.build>
+        <module.build action="testcover"/>
     </target>
 
 
