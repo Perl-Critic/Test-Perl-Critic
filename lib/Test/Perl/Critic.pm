@@ -189,22 +189,21 @@ Recommended usage for CPAN distributions:
 
 =head1 DESCRIPTION
 
-Test::Perl::Critic wraps the L<Perl::Critic> engine in a convenient
-subroutine suitable for test programs written using the L<Test::More>
-framework.  This makes it easy to integrate coding-standards
-enforcement into the build process.  For ultimate convenience (at the
-expense of some flexibility), see the L<criticism> pragma.
+Test::Perl::Critic wraps the L<Perl::Critic> engine in a convenient subroutine
+suitable for test programs written using the L<Test::More> framework.  This
+makes it easy to integrate coding-standards enforcement into the build
+process.  For ultimate convenience (at the expense of some flexibility), see
+the L<criticism> pragma.
 
 If you have an large existing code base, you might prefer to use
 L<Test::Perl::Critic::Progressive>.
 
-If you'd like to try L<Perl::Critic> without installing anything,
-there is a web-service available at L<http://perlcritic.com>.  The
-web-service does not yet support all the configuration features that
-are available in the native Perl::Critic API, but it should give you a
-good idea of what it does.  You can also invoke the perlcritic
-web-service from the command line by doing an HTTP-post, such as one
-of these:
+If you'd like to try L<Perl::Critic> without installing anything, there is a
+web-service available at L<http://perlcritic.com>.  The web-service does not
+yet support all the configuration features that are available in the native
+Perl::Critic API, but it should give you a good idea of what it does.  You can
+also invoke the perlcritic web-service from the command line by doing an
+HTTP-post, such as one of these:
 
   $> POST http://perlcritic.com/perl/critic.pl < MyModule.pm
   $> lwp-request -m POST http://perlcritic.com/perl/critic.pl < MyModule.pm
@@ -221,34 +220,32 @@ URL and interface to the service are subject to change.
 
 =item critic_ok( $FILE [, $TEST_NAME ] )
 
-Okays the test if Perl::Critic does not find any violations in $FILE.
-If it does, the violations will be reported in the test diagnostics.
-The optional second argument is the name of test, which defaults to
-"Perl::Critic test for $FILE".
+Okays the test if Perl::Critic does not find any violations in $FILE.  If it
+does, the violations will be reported in the test diagnostics.  The optional
+second argument is the name of test, which defaults to "Perl::Critic test for
+$FILE".
 
 If you use this form, you should emit your own L<Test::More> plan first.
 
 =item all_critic_ok( [ @DIRECTORIES ] )
 
 Runs C<critic_ok()> for all Perl files beneath the given list of
-C<@DIRECTORIES>.  If C<@DIRECTORIES> is empty or not given, this
-function tries to find all Perl files in the F<blib/> directory.  If
-the F<blib/> directory does not exist, then it tries the F<lib/>
-directory.  Returns true if all files are okay, or false if any file
-fails.
+C<@DIRECTORIES>.  If C<@DIRECTORIES> is empty or not given, this function
+tries to find all Perl files in the F<blib/> directory.  If the F<blib/>
+directory does not exist, then it tries the F<lib/> directory.  Returns true
+if all files are okay, or false if any file fails.
 
-This subroutine emits its own L<Test::More> plan, so you do not need
-to specify an expected number of tests yourself.
+This subroutine emits its own L<Test::More> plan, so you do not need to
+specify an expected number of tests yourself.
 
 =item all_code_files ( [@DIRECTORIES] )
 
-B<DEPRECATED:> Use the C<all_perl_files> subroutine that is exported
-by L<Perl::Critic::Utils> instead.
+B<DEPRECATED:> Use the C<all_perl_files> subroutine that is exported by
+L<Perl::Critic::Utils> instead.
 
 Returns a list of all the Perl files found beneath each DIRECTORY, If
-@DIRECTORIES is an empty list, defaults to F<blib/>.  If F<blib/> does
-not exist, it tries F<lib/>.  Skips any files in CVS or Subversion
-directories.
+@DIRECTORIES is an empty list, defaults to F<blib/>.  If F<blib/> does not
+exist, it tries F<lib/>.  Skips any files in CVS or Subversion directories.
 
 A Perl file is:
 
@@ -264,30 +261,28 @@ A Perl file is:
 
 =head1 CONFIGURATION
 
-L<Perl::Critic> is highly configurable.  By default,
-Test::Perl::Critic invokes Perl::Critic with its default
-configuration.  But if you have developed your code against a custom
-Perl::Critic configuration, you will want to configure
-Test::Perl::Critic to do the same.
+L<Perl::Critic> is highly configurable.  By default, Test::Perl::Critic
+invokes Perl::Critic with its default configuration.  But if you have
+developed your code against a custom Perl::Critic configuration, you will want
+to configure Test::Perl::Critic to do the same.
 
-Any arguments given to the C<use> pragma will be passed into the
-L<Perl::Critic> constructor.  So if you have developed your code using
-a custom F<~/.perlcriticrc> file, you can direct Test::Perl::Critic to
-use a custom file too.
+Any arguments passed through the C<use> pragma (or via C<<
+Test::Perl::Critic->import() >> )will be passed into the L<Perl::Critic>
+constructor.  So if you have developed your code using a custom
+F<~/.perlcriticrc> file, you can direct L<Test::Perl::Critic> to use your
+custom file too.
 
   use Test::Perl::Critic (-profile => 't/perlcriticrc');
   all_critic_ok();
 
-Now place a copy of your own F<~/.perlcriticrc> file in the distribution
-as F<t/perlcriticrc>.  Then, C<critic_ok()> will be run on all Perl
-files in this distribution using this same Perl::Critic configuration.
-See the L<Perl::Critic> documentation for details on the
-F<.perlcriticrc> file format.
+Now place a copy of your own F<~/.perlcriticrc> file in the distribution as
+F<t/perlcriticrc>.  Then, C<critic_ok()> will be run on all Perl files in this
+distribution using this same Perl::Critic configuration.  See the
+L<Perl::Critic> documentation for details on the F<.perlcriticrc> file format.
 
-Any argument that is supported by the L<Perl::Critic> constructor can
-be passed through this interface.  For example, you can also set the
-minimum severity level, or include & exclude specific policies like
-this:
+Any argument that is supported by the L<Perl::Critic> constructor can be
+passed through this interface.  For example, you can also set the minimum
+severity level, or include & exclude specific policies like this:
 
   use Test::Perl::Critic (-severity => 2, -exclude => ['RequireRcsKeywords']);
   all_critic_ok();
@@ -297,11 +292,11 @@ options and arguments.
 
 =head1 DIAGNOSTIC DETAILS
 
-By default, Test::Perl::Critic displays basic information about each
-Policy violation in the diagnostic output of the test.  You can
-customize the format and content of this information by using the
-C<-verbose> option.  This behaves exactly like the C<-verbose> switch
-on the F<perlcritic> program.  For example:
+By default, Test::Perl::Critic displays basic information about each Policy
+violation in the diagnostic output of the test.  You can customize the format
+and content of this information by using the C<-verbose> option.  This behaves
+exactly like the C<-verbose> switch on the F<perlcritic> program.  For
+example:
 
   use Test::Perl::Critic (-verbose => 6);
 
@@ -309,13 +304,13 @@ on the F<perlcritic> program.  For example:
 
   use Test::Perl::Critic (-verbose => '%f: %m at %l');
 
-If given a number, Test::Perl::Critic reports violations using one of
-the predefined formats described below. If given a string, it is
-interpreted to be an actual format specification. If the C<-verbose>
-option is not specified, it defaults to 3.
+If given a number, L<Test::Perl::Critic> reports violations using one of the
+predefined formats described below. If given a string, it is interpreted to be
+an actual format specification. If the C<-verbose> option is not specified, it
+defaults to 3.
 
     Verbosity     Format Specification
-    -----------   -------------------------------------------------------------
+    -----------   -------------------------------------------------------
      1            "%f:%l:%c:%m\n",
      2            "%f: (%l:%c) %m\n",
      3            "%m at %f line %l\n",
@@ -328,40 +323,48 @@ option is not specified, it defaults to 3.
     10            "%m at line %l, column %c.\n  %p (Severity: %s)\n%d\n",
     11            "%m at line %l, near '%r'.\n  %p (Severity: %s)\n%d\n"
 
-Formats are a combination of literal and escape characters similar to
-the way C<sprintf> works. See L<String::Format> for a full explanation
-of the formatting capabilities. Valid escape characters are:
+Formats are a combination of literal and escape characters similar to the way
+C<sprintf> works. See L<String::Format> for a full explanation of the
+formatting capabilities. Valid escape characters are:
 
     Escape    Meaning
     -------   ----------------------------------------------------------------
     %c        Column number where the violation occurred
-    %d        Full diagnostic discussion of the violation
+    %d        Full diagnostic discussion of the violation (DESCRIPTION in POD)
     %e        Explanation of violation or page numbers in PBP
-    %f        Name of the file where the violation occurred.
-    %l        Line number where the violation occurred
+    %F        Just the name of the logical file where the violation occurred.
+    %f        Path to the logical file where the violation occurred.
+    %G        Just the name of the physical file where the violation occurred.
+    %g        Path to the physical file where the violation occurred.
+    %l        Logical line number where the violation occurred
+    %L        Physical line number where the violation occurred
     %m        Brief description of the violation
-    %P        Name of the Policy module that created the violation
+    %P        Full name of the Policy module that created the violation
     %p        Name of the Policy without the Perl::Critic::Policy:: prefix
     %r        The string of source code that caused the violation
+    %C        The class of the PPI::Element that caused the violation
     %s        The severity level of the violation
+
 
 =head1 CAVEATS
 
 Despite the convenience of using a test script to enforce your coding
-standards, there are some inherent risks when distributing those tests
-to others.  Since you don't know which version of L<Perl::Critic> the
-end-user has and whether they have installed any additional Policy
-modules, you can't really be sure that your code will pass the
-Test::Perl::Critic tests on another machine.
+standards, there are some inherent risks when distributing those tests to
+others.  Since you don't know which version of L<Perl::Critic> the end-user
+has and whether they have installed any additional Policy modules, you can't
+really be sure that your code will pass the Test::Perl::Critic tests on
+another machine.
 
-B<For these reasons, we strongly advise you to make your perlcritic
-tests optional, or exclude them from the distribution entirely.>
+B<For these reasons, we strongly advise you to make your perlcritic tests
+optional, or exclude them from the distribution entirely.>
 
-The recommended usage in the L<"SYNOPSIS"> section illustrates one way
-to make your F<perlcritic.t> test optional.  Also, you should B<not>
-list Test::Perl::Critic as a requirement in your build script.  These
-tests are only relevant to the author and should not be a prerequisite
-for end-use.
+The recommended usage in the L<"SYNOPSIS"> section illustrates one way to make
+your F<perlcritic.t> test optional.  Another option is to put F<perlcritic.t>
+and other author-only tests in a separate directory (F<xt/> seems to be
+common), and then use a custom build action when you want to run them.  Also,
+you should B<not> list Test::Perl::Critic as a requirement in your build
+script.  These tests are only relevant to the author and should not be a
+prerequisite for end-use.
 
 See L<http://www.chrisdolan.net/talk/index.php/2005/11/14/private-regression-tests/>
 for an interesting discussion about Test::Perl::Critic and other types
@@ -374,14 +377,14 @@ of author-only regression tests.
 
 =head1 PERFORMANCE HACKS
 
-If you want a small performance boost, you can tell PPI to cache
-results from previous parsing runs.  Most of the processing time is in
-Perl::Critic, not PPI, so the speedup is not huge (only about 20%).
-Nonetheless, if your distribution is large, it's worth the effort.
+If you want a small performance boost, you can tell PPI to cache results from
+previous parsing runs.  Most of the processing time is in Perl::Critic, not
+PPI, so the speedup is not huge (only about 20%).  Nonetheless, if your
+distribution is large, it's worth the effort.
 
-Add a block of code like the following to your test program, probably
-just before the call to C<all_critic_ok()>.  Be sure to adjust the
-path to the temp directory appropriately for your system.
+Add a block of code like the following to your test program, probably just
+before the call to C<all_critic_ok()>.  Be sure to adjust the path to the temp
+directory appropriately for your system.
 
     use File::Spec;
     my $cache_path = File::Spec->catdir(File::Spec->tmpdir,
@@ -392,10 +395,10 @@ path to the temp directory appropriately for your system.
     require PPI::Cache;
     PPI::Cache->import(path => $cache_path);
 
-We recommend that you do NOT use this technique for tests that will go
-out to end-users.  They're probably going to only run the tests once,
-so they will not see the benefit of the caching but will still have
-files stored in their temp directory.
+We recommend that you do NOT use this technique for tests that will go out to
+end-users.  They're probably going to only run the tests once, so they will
+not see the benefit of the caching but will still have files stored in their
+temp directory.
 
 =head1 BUGS
 
@@ -418,11 +421,11 @@ documentation for Test::Perl::Critic.  Thanks, Andy.
 
 =head1 AUTHOR
 
-Jeffrey Ryan Thalhammer <thaljef@cpan.org>
+Jeffrey Ryan Thalhammer <jeff@imaginative-software.com>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2005-2006 Jeffrey Ryan Thalhammer.  All rights reserved.
+Copyright (c) 2005-2009 Imaginative Software Systems.  All rights reserved.
 
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.  The full text of this license
