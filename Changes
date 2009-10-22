@@ -5,10 +5,13 @@
 # $Revision$
 ########################################################################
 
-[1.xx] Released on 2008-xx-xx
+[1.02] Released on 2009-10-22
 
      Documentation changes.  META.yml "enhancements".  Moved author
      tests out of the way of normal testing.
+
+     Now requires Perl-Critic version 1.105 or newer.  Fixed source
+     code to be compliant with this version. Reported by Xavier Caron.
 
 [1.01] Released on 2007-01-24
 

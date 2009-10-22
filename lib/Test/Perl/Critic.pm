@@ -23,7 +23,7 @@ use Perl::Critic::Utils;
 
 #---------------------------------------------------------------------------
 
-our $VERSION = 1.01;
+our $VERSION = 1.02;
 
 #---------------------------------------------------------------------------
 
@@ -37,9 +37,11 @@ sub import {
     my ( $self, %args ) = @_;
     my $caller = caller;
 
-    no strict 'refs';  ## no critic
-    *{ $caller . '::critic_ok' }     = \&critic_ok;
-    *{ $caller . '::all_critic_ok' } = \&all_critic_ok;
+    {
+        no strict 'refs';  ## no critic qw(ProhibitNoStrict)
+        *{ $caller . '::critic_ok' }     = \&critic_ok;
+        *{ $caller . '::all_critic_ok' } = \&all_critic_ok;
+    }
 
     $TEST->exported_to($caller);
 
@@ -64,19 +66,20 @@ sub critic_ok {
     my $ok = 0;
 
     # Run Perl::Critic
-    eval {
+    my $status = eval {
         # TODO: Should $critic be a global singleton?
         $critic     = Perl::Critic->new( %CRITIC_ARGS );
         @violations = $critic->critique( $file );
         $ok         = not scalar @violations;
+        1;
     };
 
     # Evaluate results
-    $TEST->ok( $ok, $test_name );
+    $TEST->ok($ok, $test_name );
 
 
-    if ($EVAL_ERROR) {           # Trap exceptions from P::C
-        $TEST->diag( "\n" );     # Just to get on a new line.
+    if (!$status || $EVAL_ERROR) {   # Trap exceptions from P::C
+        $TEST->diag( "\n" );         # Just to get on a new line.
         $TEST->diag( qq{Perl::Critic had errors in "$file":} );
         $TEST->diag( qq{\t$EVAL_ERROR} );
     }
@@ -426,3 +429,13 @@ it under the same terms as Perl itself.  The full text of this license
 can be found in the LICENSE file included with this module.
 
 =cut
+
+##############################################################################
+# Local Variables:
+#   mode: cperl
+#   cperl-indent-level: 4
+#   fill-column: 78
+#   indent-tabs-mode: nil
+#   c-indentation-style: bsd
+# End:
+# ex: set ts=8 sts=4 sw=4 tw=78 ft=perl expandtab shiftround :
