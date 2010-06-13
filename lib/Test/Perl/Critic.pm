@@ -366,7 +366,7 @@ you should B<not> list Test::Perl::Critic as a requirement in your build
 script.  These tests are only relevant to the author and should not be a
 prerequisite for end-use.
 
-See L<http://www.chrisdolan.net/talk/index.php/2005/11/14/private-regression-tests/>
+See L<http://chrisdolan.net/talk/2005/11/14/private-regression-tests/>
 for an interesting discussion about Test::Perl::Critic and other types
 of author-only regression tests.
 
