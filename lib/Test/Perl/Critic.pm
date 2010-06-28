@@ -57,18 +57,57 @@ sub import {
 sub critic_ok {
 
     my ( $file, $test_name ) = @_;
-    croak q{no file specified} if not defined $file;
-    croak qq{"$file" does not exist} if not -f $file;
-    $test_name ||= qq{Test::Perl::Critic for "$file"};
 
     my $critic = undef;
+
+    # Run Perl::Critic
+    my $status = eval {
+        $critic     = Perl::Critic->new( %CRITIC_ARGS );
+        1;
+    };
+
+    return _critic_ok($file, $critic, $test_name);
+}
+
+#---------------------------------------------------------------------------
+
+sub all_critic_ok {
+
+    my @dirs = @_;
+    if (not @dirs) {
+        @dirs = _starting_points();
+    }
+    
+    my $critic = undef;
+
+    # Run Perl::Critic
+    my $status = eval {
+        $critic     = Perl::Critic->new( %CRITIC_ARGS );
+        1;
+    };
+
+    my @files = all_code_files( @dirs );
+    $TEST->plan( tests => scalar @files );
+
+    my $okays = grep { _critic_ok($_, $critic) } @files;
+    
+    return $okays == @files;
+}
+
+#--------------------------------------------------------------------------
+
+sub _critic_ok {
+
+    my ( $file, $critic, $test_name ) = @_;
+    croak q{no file specified} if not defined $file;
+    croak qq{"$file" does not exist} if not -f $file;
+    $test_name ||= qq{Test::Perl::CriticWithStats for "$file"};
+
     my @violations = ();
     my $ok = 0;
 
     # Run Perl::Critic
     my $status = eval {
-        # TODO: Should $critic be a global singleton?
-        $critic     = Perl::Critic->new( %CRITIC_ARGS );
         @violations = $critic->critique( $file );
         $ok         = not scalar @violations;
         1;
@@ -93,22 +132,6 @@ sub critic_ok {
     }
 
     return $ok;
-}
-
-#---------------------------------------------------------------------------
-
-sub all_critic_ok {
-
-    my @dirs = @_;
-    if (not @dirs) {
-        @dirs = _starting_points();
-    }
-
-    my @files = all_code_files( @dirs );
-    $TEST->plan( tests => scalar @files );
-
-    my $okays = grep { critic_ok($_) } @files;
-    return $okays == @files;
 }
 
 #---------------------------------------------------------------------------
