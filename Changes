@@ -78,17 +78,17 @@
      the same.
 
      Added a few more test cases.  In general, this module doesn't
-     have very good test coverage because I haven't really figured 
+     have very good test coverage because I haven't really figured
      out how to test a Test.
 
 [0.02] Released on 2005-09-30
 
      Some minor tweaks; Edited POD.
 
-     Removed Test::Pod and Test::Pod::Coverage from the prerequisites 
+     Removed Test::Pod and Test::Pod::Coverage from the prerequisites
      list.  Those tests only run if the modules are installed.
 
-     Test::Perl::Critic is going to require Perl::Critic version 0.08 
+     Test::Perl::Critic is going to require Perl::Critic version 0.08
      or later, or it won't pass its own criticism tests.
 
 [0.01] Not released

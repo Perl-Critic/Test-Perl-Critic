@@ -15,7 +15,7 @@ to your favorite shell:
   perl Makefile.PL
   make
   make test
-  make install 
+  make install
 
 Or if you prefer C<Module::Build>, try this:
 
@@ -24,4 +24,4 @@ Or if you prefer C<Module::Build>, try this:
   perl Build.pl
   ./Build
   ./Build test
-  ./Build install 
+  ./Build install
