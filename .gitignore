@@ -1,5 +1,7 @@
 Build
 META.yml
+MYMETA.json
+MYMETA.yml
 Makefile
 README
 Test-Perl-Critic-*
