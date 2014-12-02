@@ -2,10 +2,8 @@ Build
 MYMETA.yml
 MYMETA.json
 MANIFEST.bak
-README
 Test-Perl-Critic-*
-_build*
-blib*
+_build
 cover_db
 nytprof
 nytprof.out
