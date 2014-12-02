@@ -6,7 +6,7 @@ LICENSE
 MANIFEST			This list of files
 t/00_compile.t
 t/01_api.t
-t/98_pod_syntax.t
-t/99_pod_coverage.t
+xt/author/98_pod_syntax.t
+xt/author/99_pod_coverage.t
 xt/author/96_perlcritic.t
 xt/author/perlcriticrc
