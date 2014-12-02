@@ -3,6 +3,7 @@ META.yml
 MYMETA.json
 MYMETA.yml
 Makefile
+MANIFEST.bak
 README
 Test-Perl-Critic-*
 _build*
