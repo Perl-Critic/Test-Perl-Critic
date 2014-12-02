@@ -58,6 +58,7 @@ my $builder = $class->new(
     requires             => {
         'Carp'                      => 0,
         'English'                   => 0,
+        'MCE'                       => 1.520,
         'Perl::Critic'              => 1.105,
         'Perl::Critic::Utils'       => 1.105,
         'Perl::Critic::Violation'   => 1.105,
