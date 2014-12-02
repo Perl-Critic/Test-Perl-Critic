@@ -46,7 +46,6 @@ my $builder = $class->new(
     dist_author     => 'Jeffrey Thalhammer <thaljef@cpan.org>',
     dist_abstract   => 'Use Perl::Critic in test programs.',
     license         => 'perl',
-    dynamic_config  => 1,
     create_readme   => 1,
     create_packlist => 1,
     sign            => 0,
