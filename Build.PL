@@ -66,7 +66,7 @@ my $builder = $class->new(
         'Test::More'                => 0,
     },
 
-    add_to_cleanup  => [ qw(MANIFEST.bak README) ],
+    add_to_cleanup  => [ qw(Test-Perl-Critic-* MANIFEST.bak) ],
 
     meta_merge      => {
         resources   => {
