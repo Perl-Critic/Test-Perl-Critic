@@ -51,7 +51,11 @@ my $builder = $class->new(
     create_packlist => 1,
     sign            => 0,
 
-    requires        => {
+    configure_requires   => { 
+        'Module::Build'             => 0.4,
+     },
+
+    requires             => {
         'Carp'                      => 0,
         'English'                   => 0,
         'Perl::Critic'              => 1.105,
@@ -72,8 +76,7 @@ my $builder = $class->new(
         resources   => {
             homepage    => 'http://perlcritic.com',
             license     => 'http://dev.perl.org/licenses/',
-            repository  => 'http://guest@perlcritic.tigris.org/svn/perlcritic/trunk/distributions/Test-Perl-Critic/',
-            MailingList => 'http://perlcritic.tigris.org/servlets/SummarizeList?listName=users',
+            repository  => 'http://github.com/Perl-Critic/Test-Perl-Critic.git',
         }
     },
 );
