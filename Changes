@@ -1,9 +1,12 @@
-#######################################################################
-#      $URL$
-#     $Date$
-#   $Author$
-# $Revision$
-########################################################################
+[1.02_01] Released on 2014-12-02
+
+     !! DEVELOPER RELEASE !!
+
+     all_critic_ok() will now run tests in parallel over multiple cores.
+     So if you have 8 cores, this could potentially produce an 8x speedup.
+     However, the exact performance depends on the size and shape of your
+     code base and your Perl::Critic configuration. Thank you Mario Roy
+     for writing the wonderful MCE module that makes this all possible!
 
 [1.02] Released on 2009-10-22
 
