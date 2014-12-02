@@ -12,14 +12,14 @@ use 5.006001;
 use strict;
 use warnings;
 
-use English qw(-no_match_vars);
 use Carp qw(croak);
+use English qw(-no_match_vars);
+use MCE::Grep chunk_size => 1;
 
 use Test::Builder qw();
 use Perl::Critic qw();
 use Perl::Critic::Violation qw();
 use Perl::Critic::Utils;
-
 
 #---------------------------------------------------------------------------
 
@@ -27,7 +27,8 @@ our $VERSION = 1.02;
 
 #---------------------------------------------------------------------------
 
-my $TEST        = Test::Builder->new();
+my $TEST = Test::Builder->new;
+my $DIAG_INDENT = '  ';
 my %CRITIC_ARGS = ();
 
 #---------------------------------------------------------------------------
@@ -43,11 +44,11 @@ sub import {
         *{ $caller . '::all_critic_ok' } = \&all_critic_ok;
     }
 
-    $TEST->exported_to($caller);
-
     # -format is supported for backward compatibility
     if ( exists $args{-format} ) { $args{-verbose} = $args{-format}; }
     %CRITIC_ARGS = %args;
+
+    $TEST->exported_to($caller);
 
     return 1;
 }
@@ -67,7 +68,6 @@ sub critic_ok {
 
     # Run Perl::Critic
     my $status = eval {
-        # TODO: Should $critic be a global singleton?
         $critic     = Perl::Critic->new( %CRITIC_ARGS );
         @violations = $critic->critique( $file );
         $ok         = not scalar @violations;
@@ -77,21 +77,19 @@ sub critic_ok {
     # Evaluate results
     $TEST->ok($ok, $test_name );
 
-
     if (!$status || $EVAL_ERROR) {   # Trap exceptions from P::C
         $TEST->diag( "\n" );         # Just to get on a new line.
         $TEST->diag( qq{Perl::Critic had errors in "$file":} );
         $TEST->diag( qq{\t$EVAL_ERROR} );
     }
-    elsif ( not $ok ) {          # Report Policy violations
-        $TEST->diag( "\n" );     # Just to get on a new line.
-        $TEST->diag( qq{Perl::Critic found these violations in "$file":} );
-
+    elsif ( not $ok ) {              # Report Policy violations
+        $TEST->diag( "\n" );         # Just to get on a new line.
         my $verbose = $critic->config->verbose();
         Perl::Critic::Violation::set_format( $verbose );
-        for my $viol (@violations) { $TEST->diag("$viol") }
+        for my $viol (@violations) { $TEST->diag($DIAG_INDENT . $viol) }
     }
 
+    $TEST->diag("Failed: $file") if not $ok;
     return $ok;
 }
 
@@ -104,11 +102,24 @@ sub all_critic_ok {
         @dirs = _starting_points();
     }
 
-    my @files = all_code_files( @dirs );
-    $TEST->plan( tests => scalar @files );
+    # Since tests are running in forked MCE workers, test results could arrive
+    # in any order. The test numbers will be meaningless, so turn them off.
+    $TEST->use_numbers(0);
 
-    my $okays = grep { critic_ok($_) } @files;
-    return $okays == @files;
+    # The parent won't know about any of the tests that were run by the forked
+    # workers. So we disable the T::B sanity checks at the end of its life.
+    $TEST->no_ending(1);
+
+    my @files = all_code_files( @dirs );
+    my $okays = mce_grep { critic_ok($_) } @files;
+    my $pass = $okays == @files;
+
+    # To make Test::Harness happy, we must emit a test plan and a sensible exit
+    # status. Usually, T::B does this for us, but we disabled the ending above.
+    eval 'END { $? = 1 }' if not $pass; ## no critic qw(StringyEval)
+    $TEST->done_testing(scalar @files);
+
+    return $pass;
 }
 
 #---------------------------------------------------------------------------
