@@ -1,19 +1,9 @@
 INSTALLATION
 
-To install Test::Perl::Critic with C<make>, give the following commands
-to your favorite shell:
+To install Test::Perl::Critic, give the following commands:
 
-  tar -zxf Test-Perl-Critic-1.01.tar.gz
-  cd Test-Perl-Critic-1.01
-  perl Makefile.PL
-  make
-  make test
-  make install
-
-Or if you prefer C<Module::Build>, try this:
-
-  tar -zxf Test-Perl-Critic-1.01.tar.gz
-  cd Test-Perl-Critic-1.01
+  tar -zxf Test-Perl-Critic-1.01_02.tar.gz
+  cd Test-Perl-Critic-1.01_02
   perl Build.pl
   ./Build
   ./Build test

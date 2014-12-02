@@ -8,6 +8,8 @@ CVS
 RCS
 ,v$
 \.svn
+\.git
+\.gitignore
 
 # Distribution files
 \.zip$
