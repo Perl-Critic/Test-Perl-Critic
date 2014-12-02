@@ -371,31 +371,6 @@ of author-only regression tests.
   critic_ok()
   all_critic_ok()
 
-=head1 PERFORMANCE HACKS
-
-If you want a small performance boost, you can tell PPI to cache results from
-previous parsing runs.  Most of the processing time is in Perl::Critic, not
-PPI, so the speedup is not huge (only about 20%).  Nonetheless, if your
-distribution is large, it's worth the effort.
-
-Add a block of code like the following to your test program, probably just
-before the call to C<all_critic_ok()>.  Be sure to adjust the path to the temp
-directory appropriately for your system.
-
-    use File::Spec;
-    my $cache_path = File::Spec->catdir(File::Spec->tmpdir,
-                                        "test-perl-critic-cache-$ENV{USER}");
-    if (!-d $cache_path) {
-       mkdir $cache_path, oct 700;
-    }
-    require PPI::Cache;
-    PPI::Cache->import(path => $cache_path);
-
-We recommend that you do NOT use this technique for tests that will go out to
-end-users.  They're probably going to only run the tests once, so they will
-not see the benefit of the caching but will still have files stored in their
-temp directory.
-
 =head1 BUGS
 
 If you find any bugs, please submit them to
