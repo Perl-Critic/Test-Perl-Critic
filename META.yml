@@ -5,7 +5,7 @@ author:
 build_requires:
   Test::More: '0'
 configure_requires:
-  Module::Build: '0.42'
+  Module::Build: '0.4'
 dynamic_config: 1
 generated_by: 'Module::Build version 0.421, CPAN::Meta::Converter version 2.143240'
 license: perl
@@ -27,8 +27,7 @@ requires:
   strict: '0'
   warnings: '0'
 resources:
-  MailingList: http://perlcritic.tigris.org/servlets/SummarizeList?listName=users
   homepage: http://perlcritic.com
   license: http://dev.perl.org/licenses/
-  repository: http://guest@perlcritic.tigris.org/svn/perlcritic/trunk/distributions/Test-Perl-Critic/
+  repository: http://github.com/Perl-Critic/Test-Perl-Critic.git
 version: 1.02_001

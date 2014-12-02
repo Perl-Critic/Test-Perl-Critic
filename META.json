@@ -21,7 +21,7 @@
       },
       "configure" : {
          "requires" : {
-            "Module::Build" : "0.42"
+            "Module::Build" : "0.4"
          }
       },
       "runtime" : {
@@ -50,9 +50,8 @@
          "http://dev.perl.org/licenses/"
       ],
       "repository" : {
-         "url" : "http://guest@perlcritic.tigris.org/svn/perlcritic/trunk/distributions/Test-Perl-Critic/"
-      },
-      "x_MailingList" : "http://perlcritic.tigris.org/servlets/SummarizeList?listName=users"
+         "url" : "http://github.com/Perl-Critic/Test-Perl-Critic.git"
+      }
    },
    "version" : "1.02_001"
 }
