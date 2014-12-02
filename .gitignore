@@ -1,9 +1,6 @@
 Build
-META.yml
-META.json
 MYMETA.yml
 MYMETA.json
-Makefile
 MANIFEST.bak
 README
 Test-Perl-Critic-*
@@ -12,5 +9,3 @@ blib*
 cover_db
 nytprof
 nytprof.out
-pod2htmd.tmp
-pod2htmi.tmp
