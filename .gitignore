@@ -4,6 +4,7 @@ MYMETA.json
 MANIFEST.bak
 Test-Perl-Critic-*
 _build
+blib
 cover_db
 nytprof
 nytprof.out
