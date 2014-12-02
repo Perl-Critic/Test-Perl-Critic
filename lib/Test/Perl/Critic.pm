@@ -200,23 +200,14 @@ process.  For ultimate convenience (at the expense of some flexibility), see
 the L<criticism> pragma.
 
 If you have an large existing code base, you might prefer to use
-L<Test::Perl::Critic::Progressive>.
+L<Test::Perl::Critic::Progressive>, which allows you to clean your code
+incrementally instead of all at once..
 
 If you'd like to try L<Perl::Critic> without installing anything, there is a
 web-service available at L<http://perlcritic.com>.  The web-service does not
-yet support all the configuration features that are available in the native
-Perl::Critic API, but it should give you a good idea of what it does.  You can
-also invoke the perlcritic web-service from the command line by doing an
-HTTP-post, such as one of these:
-
-  $> POST http://perlcritic.com/perl/critic.pl < MyModule.pm
-  $> lwp-request -m POST http://perlcritic.com/perl/critic.pl < MyModule.pm
-  $> wget -q -O - --post-file=MyModule.pm http://perlcritic.com/perl/critic.pl
-
-Please note that the perlcritic web-service is still alpha code.  The
-URL and interface to the service are subject to change.
-
-
+support all the configuration features that are available in the native
+Perl::Critic API, but it should give you a good idea of what Perl::Critic can
+do.
 
 =head1 SUBROUTINES
 
@@ -229,7 +220,8 @@ does, the violations will be reported in the test diagnostics.  The optional
 second argument is the name of test, which defaults to "Perl::Critic test for
 $FILE".
 
-If you use this form, you should emit your own L<Test::More> plan first.
+If you use this form, you should load L<Test::More> and emit your own test plan
+first or call C<done_testing()> afterwards.
 
 =item all_critic_ok( [ @DIRECTORIES ] )
 
@@ -239,8 +231,9 @@ tries to find all Perl files in the F<blib/> directory.  If the F<blib/>
 directory does not exist, then it tries the F<lib/> directory.  Returns true
 if all files are okay, or false if any file fails.
 
-This subroutine emits its own L<Test::More> plan, so you do not need to
-specify an expected number of tests yourself.
+This subroutine emits its own test plan, so you do not need to specify the
+expected number of tests or call C<done_testing()>. Therefore, C<all_critic_ok>
+generally cannot be used in a test script that includes other sorts of tests.
 
 =item all_code_files ( [@DIRECTORIES] )
 
