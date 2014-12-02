@@ -7,6 +7,7 @@ verbose = %f: %m at line %l, column %c.  %e.  (Severity: %s, %p)\n
 #-----------------------------------------------------------------------------
 
 [-CodeLayout::RequireTidyCode]
+[-Documentation::RequirePodLinksIncludeText]
 
 [Documentation::RequirePodSections]
 lib_sections    = NAME|DESCRIPTION|AUTHOR|COPYRIGHT

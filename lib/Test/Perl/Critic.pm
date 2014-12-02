@@ -21,7 +21,7 @@ our $VERSION = 1.02_01;
 #---------------------------------------------------------------------------
 
 my $TEST = Test::Builder->new;
-my $DIAG_INDENT = '  ';
+my $DIAG_INDENT = q{  };
 my %CRITIC_ARGS = ();
 
 #---------------------------------------------------------------------------
@@ -108,7 +108,7 @@ sub all_critic_ok {
 
     # To make Test::Harness happy, we must emit a test plan and a sensible exit
     # status. Usually, T::B does this for us, but we disabled the ending above.
-    eval 'END { $? = 1 }' if not $pass; ## no critic qw(StringyEval)
+    $pass || eval 'END { $? = 1 }'; ## no critic qw(Eval Interpolation)
     $TEST->done_testing(scalar @files);
 
     return $pass;
