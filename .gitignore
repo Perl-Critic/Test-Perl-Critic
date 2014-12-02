@@ -1,7 +1,8 @@
 Build
 META.yml
-MYMETA.json
+META.json
 MYMETA.yml
+MYMETA.json
 Makefile
 MANIFEST.bak
 README
