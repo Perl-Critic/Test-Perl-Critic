@@ -82,7 +82,6 @@ sub critic_ok {
         for my $viol (@violations) { $TEST->diag($DIAG_INDENT . $viol) }
     }
 
-    $TEST->diag("Failed: $file") if not $ok;
     return $ok;
 }
 
