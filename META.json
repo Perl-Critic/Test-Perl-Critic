@@ -41,7 +41,7 @@
    "provides" : {
       "Test::Perl::Critic" : {
          "file" : "lib/Test/Perl/Critic.pm",
-         "version" : "1.02_001"
+         "version" : "1.02_002"
       }
    },
    "release_status" : "testing",
@@ -54,5 +54,5 @@
          "url" : "http://github.com/Perl-Critic/Test-Perl-Critic.git"
       }
    },
-   "version" : "1.02_001"
+   "version" : "1.02_002"
 }

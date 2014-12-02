@@ -16,7 +16,7 @@ name: Test-Perl-Critic
 provides:
   Test::Perl::Critic:
     file: lib/Test/Perl/Critic.pm
-    version: 1.02_001
+    version: 1.02_002
 requires:
   Carp: '0'
   English: '0'
@@ -31,4 +31,4 @@ resources:
   homepage: http://perlcritic.com
   license: http://dev.perl.org/licenses/
   repository: http://github.com/Perl-Critic/Test-Perl-Critic.git
-version: 1.02_001
+version: 1.02_002
