@@ -26,7 +26,6 @@ RCS
 ^_build
 ^Build$
 ^blib
-^MANIFEST\.SKIP$
 ^Makefile$
 ^cover_db
 ^nytprof
