@@ -89,10 +89,9 @@ sub critic_ok {
 
 sub all_critic_ok {
 
-    my @dirs = @_;
-    if (not @dirs) {
-        @dirs = _starting_points();
-    }
+    my @dirs_or_files = @_ ? @_ : (-e 'blib' ? 'blib' : 'lib');
+    my @files = Perl::Critic::Utils::all_perl_files(@dirs_or_files);
+    croak "Nothing to critique" if not @files;
 
     # Since tests are running in forked MCE workers, test results could arrive
     # in any order. The test numbers will be meaningless, so turn them off.
@@ -102,7 +101,6 @@ sub all_critic_ok {
     # workers. So we disable the T::B sanity checks at the end of its life.
     $TEST->no_ending(1);
 
-    my @files = all_code_files( @dirs );
     my $okays = mce_grep { critic_ok($_) } @files;
     my $pass = $okays == @files;
 
@@ -112,24 +110,6 @@ sub all_critic_ok {
     $TEST->done_testing(scalar @files);
 
     return $pass;
-}
-
-#---------------------------------------------------------------------------
-
-sub all_code_files {
-
-    my @dirs = @_;
-    if (not @dirs) {
-        @dirs = _starting_points();
-    }
-
-    return Perl::Critic::Utils::all_perl_files(@dirs);
-}
-
-#---------------------------------------------------------------------------
-
-sub _starting_points {
-    return -e 'blib' ? 'blib' : 'lib';
 }
 
 #---------------------------------------------------------------------------
@@ -222,10 +202,10 @@ $FILE".
 If you use this form, you should load L<Test::More> and emit your own test plan
 first or call C<done_testing()> afterwards.
 
-=item all_critic_ok( [ @DIRECTORIES ] )
+=item all_critic_ok( [ @DIRECTORIES_OR_FILES ] )
 
 Runs C<critic_ok()> for all Perl files beneath the given list of
-C<@DIRECTORIES>.  If C<@DIRECTORIES> is empty or not given, this function
+C<@DIRECTORIES_OR_FILES>.  If C<@DIRECTORIES_OR_FILES> is empty or not given, this function
 tries to find all Perl files in the F<blib/> directory.  If the F<blib/>
 directory does not exist, then it tries the F<lib/> directory.  Returns true
 if all files are okay, or false if any file fails.
@@ -233,25 +213,6 @@ if all files are okay, or false if any file fails.
 This subroutine emits its own test plan, so you do not need to specify the
 expected number of tests or call C<done_testing()>. Therefore, C<all_critic_ok>
 generally cannot be used in a test script that includes other sorts of tests.
-
-=item all_code_files ( [@DIRECTORIES] )
-
-B<DEPRECATED:> Use the C<all_perl_files> subroutine that is exported by
-L<Perl::Critic::Utils> instead.
-
-Returns a list of all the Perl files found beneath each DIRECTORY, If
-@DIRECTORIES is an empty list, defaults to F<blib/>.  If F<blib/> does not
-exist, it tries F<lib/>.  Skips any files in CVS or Subversion directories.
-
-A Perl file is:
-
-=over
-
-=item * Any file that ends in F<.PL>, F<.pl>, F<.pm>, or F<.t>
-
-=item * Any file that has a first line with a shebang containing 'perl'
-
-=back
 
 =back
 
