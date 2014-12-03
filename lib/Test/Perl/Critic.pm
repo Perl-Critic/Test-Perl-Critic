@@ -202,12 +202,12 @@ $FILE".
 If you use this form, you should load L<Test::More> and emit your own test plan
 first or call C<done_testing()> afterwards.
 
-=item all_critic_ok( [ @DIRECTORIES_OR_FILES ] )
+=item all_critic_ok( [ @FILES ] )
 
-Runs C<critic_ok()> for all Perl files beneath the given list of
-C<@DIRECTORIES_OR_FILES>.  If C<@DIRECTORIES_OR_FILES> is empty or not given, this function
-tries to find all Perl files in the F<blib/> directory.  If the F<blib/>
-directory does not exist, then it tries the F<lib/> directory.  Returns true
+Runs C<critic_ok()> for all Perl files in the list of C<@FILES>. If a file is
+actually a directory, then all Perl files beneath that directory (recursively)
+will be run through C<critic_ok()>. If C<@FILES> is empty or not given, then the
+F<blib/> is used if it exists, and if not, then F<lib/> is used. Returns true
 if all files are okay, or false if any file fails.
 
 This subroutine emits its own test plan, so you do not need to specify the
