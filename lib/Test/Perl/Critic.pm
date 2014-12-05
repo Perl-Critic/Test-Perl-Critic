@@ -7,7 +7,7 @@ use warnings;
 
 use Carp qw(croak);
 use English qw(-no_match_vars);
-use MCE::Grep chunk_size => 1;
+use MCE::Grep;
 
 use Test::Builder qw();
 use Perl::Critic qw();
