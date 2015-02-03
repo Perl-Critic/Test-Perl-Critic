@@ -14,9 +14,6 @@ verbose = %f: %m at line %l, column %c.  %e.  (Severity: %s, %p)\n
 lib_sections    = NAME|DESCRIPTION|AUTHOR|COPYRIGHT
 script_sections = NAME|DESCRIPTION|AUTHOR|COPYRIGHT
 
-[Miscellanea::RequireRcsKeywords]
-keywords = URL Date Author Revision
-
 [CodeLayout::ProhibitHardTabs]
 allow_leading_tabs = 0
 
