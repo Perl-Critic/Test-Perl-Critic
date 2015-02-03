@@ -50,7 +50,7 @@ my $builder = $class->new(
     create_packlist => 1,
     sign            => 0,
 
-    configure_requires   => { 
+    configure_requires   => {
         'Module::Build'             => 0.4,
      },
 
@@ -72,12 +72,14 @@ my $builder = $class->new(
 
     add_to_cleanup  => [ qw(Test-Perl-Critic-* MANIFEST.bak) ],
 
-    meta_merge      => {
-        resources   => {
+    meta_merge          => {
+        resources => {
+            bugtracker  => 'https://github.com/Perl-Critic/Test-Perl-Critic/issues',
+            repository  => 'git://github.com/Perl-Critic/Test-Perl-Critic.git',
+            license     => [ 'http://dev.perl.org/licenses' ],
             homepage    => 'http://perlcritic.com',
-            license     => 'http://dev.perl.org/licenses/',
-            repository  => 'http://github.com/Perl-Critic/Test-Perl-Critic.git',
-        }
+
+        },
     },
 );
 
