@@ -327,6 +327,16 @@ See L<http://chrisdolan.net/talk/2005/11/14/private-regression-tests/>
 for an interesting discussion about Test::Perl::Critic and other types
 of author-only regression tests.
 
+=head1 FOR Dist::Zilla USERS
+
+If you use Test::Perl::Critic with L<Dist::Zilla>, beware that some DZ plugins
+may mutate your code in ways that are not compliant with your Perl::Critic
+rules. In particular, the standard L<Dist::Zilla::Plugin::PkgVersion> will
+inject a C<$VERSION> declaration at the top of the file, which will violate
+L<Perl::Critic::Policy::TestingAndDebughgin::RequireUseStrict>. One solution
+is to use the L<Dist::Zilla::Plugin::OurPkgVersion> which allows you to control
+where the C<$VERSION> declaration appears.
+
 =head1 EXPORTS
 
   critic_ok()
