@@ -91,7 +91,7 @@ sub all_critic_ok {
 
     my @dirs_or_files = @_ ? @_ : (-e 'blib' ? 'blib' : 'lib');
     my @files = Perl::Critic::Utils::all_perl_files(@dirs_or_files);
-    croak "Nothing to critique" if not @files;
+    croak 'Nothing to critique' if not @files;
 
     # Since tests are running in forked MCE workers, test results could arrive
     # in any order. The test numbers will be meaningless, so turn them off.
