@@ -60,6 +60,23 @@ DESCRIPTION
     Perl::Critic can do.
 
 SUBROUTINES
+    all_critic_ok( [ @FILES ] )
+        Runs "critic_ok()" for all Perl files in the list of @FILES. If a
+        file is actually a directory, then all Perl files beneath that
+        directory (recursively) will be run through "critic_ok()". If @FILES
+        is empty or not given, then the blib/ is used if it exists, and if
+        not, then lib/ is used. Returns true if all files are okay, or false
+        if any file fails.
+
+        This subroutine emits its own test plan, so you do not need to
+        specify the expected number of tests or call "done_testing()".
+        Therefore, "all_critic_ok" generally cannot be used in a test script
+        that includes other sorts of tests.
+
+        all_critic_ok() is also optimized to run tests in parallel over
+        multiple cores (if you have them) so it is usually better to call
+        this function than calling critic_ok() directly.
+
     critic_ok( $FILE [, $TEST_NAME ] )
         Okays the test if Perl::Critic does not find any violations in
         $FILE. If it does, the violations will be reported in the test
@@ -68,33 +85,6 @@ SUBROUTINES
 
         If you use this form, you should load Test::More and emit your own
         test plan first or call "done_testing()" afterwards.
-
-    all_critic_ok( [ @DIRECTORIES ] )
-        Runs "critic_ok()" for all Perl files beneath the given list of
-        @DIRECTORIES. If @DIRECTORIES is empty or not given, this function
-        tries to find all Perl files in the blib/ directory. If the blib/
-        directory does not exist, then it tries the lib/ directory. Returns
-        true if all files are okay, or false if any file fails.
-
-        This subroutine emits its own test plan, so you do not need to
-        specify the expected number of tests or call "done_testing()".
-        Therefore, "all_critic_ok" generally cannot be used in a test script
-        that includes other sorts of tests.
-
-    all_code_files ( [@DIRECTORIES] )
-        DEPRECATED: Use the "all_perl_files" subroutine that is exported by
-        Perl::Critic::Utils instead.
-
-        Returns a list of all the Perl files found beneath each DIRECTORY,
-        If @DIRECTORIES is an empty list, defaults to blib/. If blib/ does
-        not exist, it tries lib/. Skips any files in CVS or Subversion
-        directories.
-
-        A Perl file is:
-
-        *   Any file that ends in .PL, .pl, .pm, or .t
-
-        *   Any file that has a first line with a shebang containing 'perl'
 
 CONFIGURATION
     Perl::Critic is highly configurable. By default, Test::Perl::Critic
@@ -202,6 +192,16 @@ CAVEATS
     See <http://chrisdolan.net/talk/2005/11/14/private-regression-tests/>
     for an interesting discussion about Test::Perl::Critic and other types
     of author-only regression tests.
+
+FOR Dist::Zilla USERS
+    If you use Test::Perl::Critic with Dist::Zilla, beware that some DZ
+    plugins may mutate your code in ways that are not compliant with your
+    Perl::Critic rules. In particular, the standard
+    Dist::Zilla::Plugin::PkgVersion will inject a $VERSION declaration at
+    the top of the file, which will violate
+    Perl::Critic::Policy::TestingAndDebughgin::RequireUseStrict. One
+    solution is to use the Dist::Zilla::Plugin::OurPkgVersion which allows
+    you to control where the $VERSION declaration appears.
 
 EXPORTS
       critic_ok()
