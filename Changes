@@ -1,12 +1,18 @@
-[1.02_002] Released on 2014-12-02
+[1.03] Released on 2015-02-03
 
-     !! DEVELOPER RELEASE !!
+     all_critic_ok() will now run tests in parallel over multiple cores. So if
+     you have 8 cores, your Perl::Critic tests could run 8x faster. However,
+     the actual performance depends on the size and shape of your code base and
+     your Perl::Critic configuration. Thank you Mario Roy for writing the
+     wonderful MCE module that makes this all possible!
 
-     all_critic_ok() will now run tests in parallel over multiple cores.
-     So if you have 8 cores, this could potentially produce an 8x speedup.
-     However, the exact performance depends on the size and shape of your
-     code base and your Perl::Critic configuration. Thank you Mario Roy
-     for writing the wonderful MCE module that makes this all possible!
+     If you're using the critic_ok() function directly (perhaps because you
+     want more control over which files are tested) then you won't see any
+     performance boost. I recommend gathering your list of files first, and
+     then passing the list to all_critic_ok().
+
+     The deprecated function all_code_files() has now been removed from
+     Test::Perl::Critic. Use Perl::Critic::Utils::all_perl_files() instead.
 
 [1.02] Released on 2009-10-22
 
