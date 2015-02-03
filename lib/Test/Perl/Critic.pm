@@ -192,16 +192,6 @@ do.
 
 =over
 
-=item critic_ok( $FILE [, $TEST_NAME ] )
-
-Okays the test if Perl::Critic does not find any violations in $FILE.  If it
-does, the violations will be reported in the test diagnostics.  The optional
-second argument is the name of test, which defaults to "Perl::Critic test for
-$FILE".
-
-If you use this form, you should load L<Test::More> and emit your own test plan
-first or call C<done_testing()> afterwards.
-
 =item all_critic_ok( [ @FILES ] )
 
 Runs C<critic_ok()> for all Perl files in the list of C<@FILES>. If a file is
@@ -213,6 +203,20 @@ if all files are okay, or false if any file fails.
 This subroutine emits its own test plan, so you do not need to specify the
 expected number of tests or call C<done_testing()>. Therefore, C<all_critic_ok>
 generally cannot be used in a test script that includes other sorts of tests.
+
+all_critic_ok() is also optimized to run tests in parallel over multiple cores
+(if you have them) so it is usually better to call this function than calling
+critic_ok() directly.
+
+=item critic_ok( $FILE [, $TEST_NAME ] )
+
+Okays the test if Perl::Critic does not find any violations in $FILE.  If it
+does, the violations will be reported in the test diagnostics.  The optional
+second argument is the name of test, which defaults to "Perl::Critic test for
+$FILE".
+
+If you use this form, you should load L<Test::More> and emit your own test plan
+first or call C<done_testing()> afterwards.
 
 =back
 
