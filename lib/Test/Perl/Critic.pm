@@ -7,7 +7,6 @@ use warnings;
 
 use Carp qw(croak);
 use English qw(-no_match_vars);
-use MCE::Grep;
 
 use Test::Builder qw();
 use Perl::Critic qw();
@@ -93,23 +92,41 @@ sub all_critic_ok {
     my @files = Perl::Critic::Utils::all_perl_files(@dirs_or_files);
     croak 'Nothing to critique' if not @files;
 
-    # Since tests are running in forked MCE workers, test results could arrive
-    # in any order. The test numbers will be meaningless, so turn them off.
-    $TEST->use_numbers(0);
+    my $have_mce = eval {require MCE::Grep};
+    return $have_mce ? _test_parallel(@files) : _test_serial(@files);
+}
 
-    # The parent won't know about any of the tests that were run by the forked
-    # workers. So we disable the T::B sanity checks at the end of its life.
-    $TEST->no_ending(1);
+#---------------------------------------------------------------------------
 
-    my $okays = mce_grep { critic_ok($_) } @files;
-    my $pass = $okays == @files;
+sub _test_parallel {
+      my @files = @_;
 
-    # To make Test::Harness happy, we must emit a test plan and a sensible exit
-    # status. Usually, T::B does this for us, but we disabled the ending above.
-    $pass || eval 'END { $? = 1 }'; ## no critic qw(Eval Interpolation)
-    $TEST->done_testing(scalar @files);
+      # Since tests are running in forked MCE workers, test results could arrive
+      # in any order. The test numbers will be meaningless, so turn them off.
+      $TEST->use_numbers(0);
 
-    return $pass;
+      # The parent won't know about any of the tests that were run by the forked
+      # workers. So we disable the T::B sanity checks at the end of its life.
+      $TEST->no_ending(1);
+
+      my $okays = MCE::Grep::mce_grep { critic_ok($_) } @files;
+      my $pass = $okays == @files;
+
+      # To make Test::Harness happy, we must emit a test plan and a sensible exit
+      # status. Usually, T::B does this for us, but we disabled the ending above.
+      $pass || eval 'END { $? = 1 }'; ## no critic qw(Eval Interpolation)
+      $TEST->done_testing(scalar @files);
+}
+
+#---------------------------------------------------------------------------
+
+sub  _test_serial {
+  my @files = @_;
+
+  my $okays = grep {critic_ok($_)} @files;
+  my $pass = $okays == @files;
+
+  return $pass;
 }
 
 #---------------------------------------------------------------------------
