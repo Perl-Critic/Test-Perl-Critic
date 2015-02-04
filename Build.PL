@@ -62,7 +62,7 @@ my $builder = $class->new(
         'Perl::Critic::Utils'       => 1.105,
         'Perl::Critic::Violation'   => 1.105,
         'strict'                    => 0,
-        'Test::Builder'             => 0,
+        'Test::Builder'             => 0.88,
         'warnings'                  => 0,
     },
 
