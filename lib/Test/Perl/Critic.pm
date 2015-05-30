@@ -354,7 +354,7 @@ If you use Test::Perl::Critic with L<Dist::Zilla>, beware that some DZ plugins
 may mutate your code in ways that are not compliant with your Perl::Critic
 rules. In particular, the standard L<Dist::Zilla::Plugin::PkgVersion> will
 inject a C<$VERSION> declaration at the top of the file, which will violate
-L<Perl::Critic::Policy::TestingAndDebughgin::RequireUseStrict>. One solution
+L<Perl::Critic::Policy::TestingAndDebugging::RequireUseStrict>. One solution
 is to use the L<Dist::Zilla::Plugin::OurPkgVersion> which allows you to control
 where the C<$VERSION> declaration appears.
 
