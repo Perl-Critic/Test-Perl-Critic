@@ -366,7 +366,7 @@ where the C<$VERSION> declaration appears.
 =head1 BUGS
 
 If you find any bugs, please submit them to
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Perl-Critic>.  Thanks.
+L<https://github.com/Perl-Critic/Test-Perl-Critic/issues>.  Thanks.
 
 
 =head1 SEE ALSO
@@ -388,7 +388,7 @@ Jeffrey Ryan Thalhammer <jeff@thaljef.org>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2005-2014 Jeffrey Ryan Thalhammer.
+Copyright (c) 2005-2017 Jeffrey Ryan Thalhammer.
 
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.  The full text of this license
