@@ -73,9 +73,9 @@ SUBROUTINES
         Therefore, "all_critic_ok" generally cannot be used in a test script
         that includes other sorts of tests.
 
-        all_critic_ok() is also optimized to run tests in parallel over
+        "all_critic_ok()" is also optimized to run tests in parallel over
         multiple cores (if you have them) so it is usually better to call
-        this function than calling critic_ok() directly.
+        this function than calling "critic_ok()" directly.
 
     critic_ok( $FILE [, $TEST_NAME ] )
         Okays the test if Perl::Critic does not find any violations in

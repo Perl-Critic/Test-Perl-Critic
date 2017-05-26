@@ -221,13 +221,13 @@ This subroutine emits its own test plan, so you do not need to specify the
 expected number of tests or call C<done_testing()>. Therefore, C<all_critic_ok>
 generally cannot be used in a test script that includes other sorts of tests.
 
-all_critic_ok() is also optimized to run tests in parallel over multiple cores
+C<all_critic_ok()> is also optimized to run tests in parallel over multiple cores
 (if you have them) so it is usually better to call this function than calling
-critic_ok() directly.
+C<critic_ok()> directly.
 
 =item critic_ok( $FILE [, $TEST_NAME ] )
 
-Okays the test if Perl::Critic does not find any violations in $FILE.  If it
+Okays the test if Perl::Critic does not find any violations in C<$FILE>.  If it
 does, the violations will be reported in the test diagnostics.  The optional
 second argument is the name of test, which defaults to "Perl::Critic test for
 $FILE".
@@ -244,8 +244,8 @@ invokes Perl::Critic with its default configuration.  But if you have
 developed your code against a custom Perl::Critic configuration, you will want
 to configure Test::Perl::Critic to do the same.
 
-Any arguments passed through the C<use> pragma (or via C<<
-Test::Perl::Critic->import() >> )will be passed into the L<Perl::Critic>
+Any arguments passed through the C<use> pragma (or via
+C<< Test::Perl::Critic->import() >> )will be passed into the L<Perl::Critic>
 constructor.  So if you have developed your code using a custom
 F<~/.perlcriticrc> file, you can direct L<Test::Perl::Critic> to use your
 custom file too.
