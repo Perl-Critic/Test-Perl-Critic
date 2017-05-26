@@ -7,7 +7,7 @@ build_requires:
 configure_requires:
   Module::Build: '0.4'
 dynamic_config: 1
-generated_by: 'Module::Build version 0.421, CPAN::Meta::Converter version 2.143240'
+generated_by: 'Module::Build version 0.4222, CPAN::Meta::Converter version 2.150010'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -20,11 +20,11 @@ provides:
 requires:
   Carp: '0'
   English: '0'
-  MCE: '1.52'
+  MCE: '1.827'
   Perl::Critic: '1.105'
   Perl::Critic::Utils: '1.105'
   Perl::Critic::Violation: '1.105'
-  Test::Builder: '0'
+  Test::Builder: '0.88'
   strict: '0'
   warnings: '0'
 resources:
@@ -33,3 +33,4 @@ resources:
   license: http://dev.perl.org/licenses/
   repository: git://github.com/Perl-Critic/Test-Perl-Critic.git
 version: '1.03'
+x_serialization_backend: 'CPAN::Meta::YAML version 0.018'
