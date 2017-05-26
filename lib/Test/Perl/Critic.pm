@@ -115,7 +115,7 @@ sub _test_parallel {
       # To make Test::Harness happy, we must emit a test plan and a sensible exit
       # status. Usually, T::B does this for us, but we disabled the ending above.
       $pass || eval 'END { $? = 1 }'; ## no critic qw(Eval Interpolation)
-      $TEST->done_testing(scalar @files);
+      return $TEST->done_testing(scalar @files);
 }
 
 #---------------------------------------------------------------------------
