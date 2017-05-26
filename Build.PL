@@ -23,7 +23,7 @@ my $class = Module::Build->subclass( code => <<'END_SUBCLASS' );
         $self->depends_on('manifest');
         $self->depends_on('distmeta');
 
-        $self->test_files( qw< t xt/author > );
+        $self->test_files( qw< t xt > );
         $self->recursive_test_files(1);
 
         $self->depends_on('test');

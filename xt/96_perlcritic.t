@@ -8,7 +8,7 @@ use File::Spec;
 
 my $rcfile;
 BEGIN {
-    $rcfile = File::Spec->catfile( qw< xt author perlcriticrc > );
+    $rcfile = File::Spec->catfile( qw< xt perlcriticrc > );
 }
 
 use Test::Perl::Critic -profile => $rcfile;
