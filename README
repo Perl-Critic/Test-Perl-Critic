@@ -199,7 +199,7 @@ FOR Dist::Zilla USERS
     Perl::Critic rules. In particular, the standard
     Dist::Zilla::Plugin::PkgVersion will inject a $VERSION declaration at
     the top of the file, which will violate
-    Perl::Critic::Policy::TestingAndDebughgin::RequireUseStrict. One
+    Perl::Critic::Policy::TestingAndDebugging::RequireUseStrict. One
     solution is to use the Dist::Zilla::Plugin::OurPkgVersion which allows
     you to control where the $VERSION declaration appears.
 
