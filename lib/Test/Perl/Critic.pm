@@ -23,6 +23,12 @@ my $TEST = Test::Builder->new;
 my $DIAG_INDENT = q{  };
 my %CRITIC_ARGS = ();
 
+my $CRITIC_OBJ = undef;
+my $BUILD_CRITIC = sub {
+    return $CRITIC_OBJ if defined $CRITIC_OBJ;
+    $CRITIC_OBJ = Perl::Critic->new( @_ );
+};
+
 #---------------------------------------------------------------------------
 
 sub import {
@@ -39,6 +45,9 @@ sub import {
     # -format is supported for backward compatibility
     if ( exists $args{-format} ) { $args{-verbose} = $args{-format}; }
     %CRITIC_ARGS = %args;
+
+    # reset possibly lazy-initialized Perl::Critic
+    $CRITIC_OBJ = undef;
 
     $TEST->exported_to($caller);
 
@@ -60,7 +69,7 @@ sub critic_ok {
 
     # Run Perl::Critic
     my $status = eval {
-        $critic     = Perl::Critic->new( %CRITIC_ARGS );
+        $critic     = $BUILD_CRITIC->( %CRITIC_ARGS );
         @violations = $critic->critique( $file );
         $ok         = not scalar @violations;
         1;
