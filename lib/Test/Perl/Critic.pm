@@ -92,7 +92,7 @@ sub all_critic_ok {
     my @files = Perl::Critic::Utils::all_perl_files(@dirs_or_files);
     croak 'Nothing to critique' if not @files;
 
-    my $have_mce = eval {require MCE::Grep};
+    my $have_mce = eval { require MCE::Grep; MCE::Grep->import; 1 };
     return $have_mce ? _test_parallel(@files) : _test_serial(@files);
 }
 
@@ -109,13 +109,15 @@ sub _test_parallel {
       # workers. So we disable the T::B sanity checks at the end of its life.
       $TEST->no_ending(1);
 
-      my $okays = MCE::Grep::mce_grep { critic_ok($_) } @files;
+      my $okays = MCE::Grep->run( sub { critic_ok($_) }, @files );
       my $pass = $okays == @files;
 
       # To make Test::Harness happy, we must emit a test plan and a sensible exit
       # status. Usually, T::B does this for us, but we disabled the ending above.
       $pass || eval 'END { $? = 1 }'; ## no critic qw(Eval Interpolation)
-      return $TEST->done_testing(scalar @files);
+      $TEST->done_testing(scalar @files);
+
+      return $pass;
 }
 
 #---------------------------------------------------------------------------
@@ -125,6 +127,8 @@ sub  _test_serial {
 
   my $okays = grep {critic_ok($_)} @files;
   my $pass = $okays == @files;
+
+  $TEST->done_testing(scalar @files);
 
   return $pass;
 }
