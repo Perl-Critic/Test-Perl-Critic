@@ -4,7 +4,7 @@
       "Jeffrey Thalhammer <thaljef@cpan.org>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.4222",
+   "generated_by" : "Module::Build version 0.4224",
    "license" : [
       "perl_5"
    ],
@@ -41,7 +41,7 @@
    "provides" : {
       "Test::Perl::Critic" : {
          "file" : "lib/Test/Perl/Critic.pm",
-         "version" : "1.03"
+         "version" : "1.04"
       }
    },
    "release_status" : "stable",
@@ -57,6 +57,6 @@
          "url" : "git://github.com/Perl-Critic/Test-Perl-Critic.git"
       }
    },
-   "version" : "1.03",
+   "version" : "1.04",
    "x_serialization_backend" : "JSON::PP version 2.27400_02"
 }
