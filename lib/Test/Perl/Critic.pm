@@ -42,11 +42,11 @@ sub import {
         *{ $caller . '::all_critic_ok' } = \&all_critic_ok;
     }
 
-    # -format is supported for backward compatibility
+    # -format is supported for backward compatibility.
     if ( exists $args{-format} ) { $args{-verbose} = $args{-format}; }
     %CRITIC_ARGS = %args;
 
-    # reset possibly lazy-initialized Perl::Critic
+    # Reset possibly lazy-initialized Perl::Critic.
     $CRITIC_OBJ = undef;
 
     $TEST->exported_to($caller);
@@ -401,7 +401,7 @@ Jeffrey Ryan Thalhammer <jeff@thaljef.org>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2005-2017 Jeffrey Ryan Thalhammer.
+Copyright (c) 2005-2018 Jeffrey Ryan Thalhammer.
 
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.  The full text of this license
