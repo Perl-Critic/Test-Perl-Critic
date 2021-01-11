@@ -55,6 +55,7 @@ my $builder = $class->new(
      },
 
     requires             => {
+        # Update cpanfile if these get updated.
         'Carp'                      => 0,
         'English'                   => 0,
         'MCE'                       => 1.827,
@@ -78,7 +79,6 @@ my $builder = $class->new(
             repository  => 'git://github.com/Perl-Critic/Test-Perl-Critic.git',
             license     => [ 'http://dev.perl.org/licenses' ],
             homepage    => 'http://perlcritic.com',
-
         },
     },
 );
